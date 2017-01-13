@@ -1,6 +1,5 @@
 package com.safframework.router
 
-import com.google.auto.service.AutoService
 import com.squareup.javapoet.ClassName
 import com.squareup.javapoet.JavaFile
 import com.squareup.javapoet.MethodSpec
@@ -16,7 +15,7 @@ import javax.lang.model.util.Elements
 /**
  * Created by Tony Shen on 2017/1/10.
  */
-@AutoService(Processor::class)
+//@AutoService(Processor::class)
 class RouterProcessor: AbstractProcessor() {
 
     var mFiler: Filer?=null //文件相关的辅助类

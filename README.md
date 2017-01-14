@@ -34,10 +34,26 @@ dependencies {
 
 #使用方法
 
-
 ##Activity跳转
 
-它支持Annotation方式和非Annotation的方式来使用Router框架。
+它支持Annotation方式和非Annotation的方式来进行Activity页面跳转。使用Activity跳转时，必须在Application中做好router的映射。 
+
+我们会做这样的映射，表示从某个Activity跳转到另一个Activity需要传递user、password2个参数
+
+```Java
+Router.getInstance().setContext(getApplicationContext()); // 这一步是必须的，用于初始化Router
+Router.getInstance().map("user/:user/password/:password", SecondActivity.class);
+```
+
+有时候，activity跳转还会有动画效果，那么我们可以这么做
+
+```Java
+RouterOptions options = new RouterOptions();
+options.enterAnim = R.anim.slide_right_in;
+options.exitAnim = R.anim.slide_left_out;
+Router.getInstance().map("user/:user/password/:password", SecondActivity.class, options);
+```
+
 ###Annotation方式
 
 ```java
@@ -56,21 +72,6 @@ public @interface RouterRule {
 @RouterRule，它使用编译时注解。
 
 ###非Annotation方式
-
-使用Activity跳转必须在Application中做好router的映射。 我们会做这样的映射，表示从某个Activity跳转到另一个Activity需要传递user、password2个参数
-```Java
-          Router.getInstance().setContext(getApplicationContext()); // 这一步是必须的，用于初始化Router
-          Router.getInstance().map("user/:user/password/:password", SecondActivity.class);
-```
-
-有时候，activity跳转还会有动画效果，那么我们可以这么做
-
-```Java
-RouterOptions options = new RouterOptions();
-options.enterAnim = R.anim.slide_right_in;
-options.exitAnim = R.anim.slide_left_out;
-Router.getInstance().map("user/:user/password/:password", SecondActivity.class, options);
-```
 
 
 在Application中定义好映射，activity之间跳转只需在activity中写下如下的代码，即可跳转到相应的Activity，并传递参数

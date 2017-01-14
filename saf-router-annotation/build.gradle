@@ -1,4 +1,5 @@
 apply plugin: 'java'
+apply plugin: 'com.novoda.bintray-release'
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
@@ -6,3 +7,30 @@ dependencies {
 
 sourceCompatibility = "1.7"
 targetCompatibility = "1.7"
+
+//lintOptions {
+//    abortOnError false
+//    checkReleaseBuilds false
+//}
+
+allprojects {
+    repositories {
+        jcenter()
+    }
+    //加上这些
+    tasks.withType(Javadoc) {
+        options{ encoding "UTF-8"
+            charSet 'UTF-8'
+            links "http://docs.oracle.com/javase/7/docs/api"
+        }
+    }
+}
+
+publish{
+    userOrg = 'fengzhizi715'
+    groupId = 'com.safframework.router'
+    artifactId = 'saf-router-annotation'
+    publishVersion = '1.0.0'
+    desc = 'The annotation used in saf router library'
+    website = 'https://github.com/fengzhizi715/SAF-Kotlin-Router'
+}

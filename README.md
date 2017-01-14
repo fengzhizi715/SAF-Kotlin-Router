@@ -1,6 +1,26 @@
 # SAF-Kotlin-Router
 
-类似于rails的router功能，可以实现app的应用内跳转,包括Activity之间、Fragment之间可以轻易实现相互跳转，并传递参数。
+#下载安装
+```groovy
+ buildscript {
+     repositories {
+         jcenter()
+     }
+     dependencies {
+         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.4'
+     }
+ }
+
+ dependencies {
+    compile 'com.safframework.router:saf-router:1.0.0'
+    apt 'com.safframework.router:saf-router-compiler:1.0.0'
+     ...
+ }
+```
+
+#特性
+它提供了类似于rails的router功能，可以轻易地实现app的应用内跳转,包括Activity之间、Fragment之间可以轻易实现相互跳转，并传递参数。
+
 使用Activity跳转必须在Application中做好router的映射。 我们会做这样的映射，表示从某个Activity跳转到另一个Activity需要传递user、password2个参数
 ```Java
           Router.getInstance().setContext(getApplicationContext()); // 这一步是必须的，用于初始化Router

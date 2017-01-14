@@ -30,15 +30,17 @@ dependencies {
 ```
 
 #特性
-它提供了类似于rails的router功能，可以轻易地实现app的应用内跳转,包括Activity之间、Fragment之间可以轻易实现相互跳转，并传递参数。
+它提供了类似于rails的router功能，可以轻易地实现app的应用内跳转,包括Activity之间、Fragment之间实现相互跳转，并传递参数。
+
+这个框架的saf-router-compiler模块是用kotlin编写的。
 
 #使用方法
 
 ##Activity跳转
 
-它支持Annotation方式和非Annotation的方式来进行Activity页面跳转。使用Activity跳转时，必须在Application中做好router的映射。 
+它支持Annotation方式和非Annotation的方式来进行Activity页面跳转。使用Activity跳转时，必须在App的Application中做好router的映射。 
 
-我们会做这样的映射，表示从某个Activity跳转到另一个Activity需要传递user、password2个参数
+我们会做这样的映射，表示从某个Activity跳转到另一个Activity需要传递user、password这2个参数
 
 ```Java
 Router.getInstance().setContext(getApplicationContext()); // 这一步是必须的，用于初始化Router
@@ -55,26 +57,55 @@ Router.getInstance().map("user/:user/password/:password", SecondActivity.class, 
 ```
 
 ###Annotation方式
+在任意要跳转的目标Activity上，添加@RouterRule,它是编译时的注解。
 
 ```java
-@Target(ElementType.TYPE)
-@Retention(RetentionPolicy.CLASS)
-public @interface RouterRule {
+@RouterRule(url={"second/:second"})
+public class SecondActivity extends Activity {
 
-    /** activity对应url */
-    String[] url();
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-    int enterAnim() default 0;
+        Intent i = getIntent();
+        if (i!=null) {
+            String second = i.getStringExtra("second");
+            Log.i("SecondActivity","second="+second);
+        }
+    }
+}
 
-    int exitAnim() default 0;
+```
+而且，使用@RouterRule也支持跳转的动画效果。
+
+用Annotation方式来进行页面跳转时，Application无需做router的映射。因为，saf-router-compiler模块已经在编译时生成了一个类RouterManager。它长得形如：
+
+```java
+package com.safframework.router;
+
+import android.content.Context;
+import com.safframework.activity.SecondActivity;
+import com.safframework.router.RouterParameter.RouterOptions;
+
+public class RouterManager {
+  public static void init(Context context) {
+    Router.getInstance().setContext(context);
+    RouterOptions options = null;
+    Router.getInstance().map("second/:second", SecondActivity.class);
+  }
 }
 ```
-@RouterRule，它使用编译时注解。
+
+Application只需做如下调用：
+
+```java
+RouterManager.init(this);// 这一步是必须的，用于初始化Router
+
+```
 
 ###非Annotation方式
 
-
-在Application中定义好映射，activity之间跳转只需在activity中写下如下的代码，即可跳转到相应的Activity，并传递参数
+在Application中定义好router映射之后，activity之间跳转只需在activity中写下如下的代码，即可跳转到相应的Activity，并传递参数
 ```Java
 Router.getInstance().open("user/fengzhizi715/password/715");
 ```

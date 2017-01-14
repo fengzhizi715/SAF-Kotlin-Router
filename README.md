@@ -32,11 +32,30 @@ dependencies {
 #特性
 它提供了类似于rails的router功能，可以轻易地实现app的应用内跳转,包括Activity之间、Fragment之间可以轻易实现相互跳转，并传递参数。
 
+#使用方法
+
+
+##Activity跳转
+
 它支持Annotation方式和非Annotation的方式来使用Router框架。
+###Annotation方式
 
+```java
+@Target(ElementType.TYPE)
+@Retention(RetentionPolicy.CLASS)
+public @interface RouterRule {
 
-##Annotation方式
-##非Annotation方式
+    /** activity对应url */
+    String[] url();
+
+    int enterAnim() default 0;
+
+    int exitAnim() default 0;
+}
+```
+@RouterRule，它使用编译时注解。
+
+###非Annotation方式
 
 使用Activity跳转必须在Application中做好router的映射。 我们会做这样的映射，表示从某个Activity跳转到另一个Activity需要传递user、password2个参数
 ```Java
@@ -70,7 +89,18 @@ Router.getInstance().open("user/fengzhizi715/password/715",new RouterChecker(){
  );
 ```
 
+##Fragment跳转
+Fragment之间的跳转也无须在Application中定义跳转映射。直接在某个Fragment写下如下的代码
+```Java
+Router.getInstance().openFragment(new FragmentOptions(getFragmentManager(),new Fragment2()), R.id.content_frame);
+```
 
+当然在Fragment之间跳转可以传递参数
+```Java
+Router.getInstance().openFragment("user/fengzhizi715/password/715",new FragmentOptions(getFragmentManager(),new Fragment2()), R.id.content_frame);
+```
+
+##其他跳转
 单独跳转到某个网页，调用系统电话，调用手机上的地图app打开地图等无须在Application中定义跳转映射。
 
 ```Java
@@ -81,12 +111,7 @@ Router.getInstance().openURI("tel://18662430000");
 Router.getInstance().openURI("geo:0,0?q=31,121");
 ```
 
-Fragment之间的跳转也无须在Application中定义跳转映射。直接在某个Fragment写下如下的代码
-```Java
-Router.getInstance().openFragment(new FragmentOptions(getFragmentManager(),new Fragment2()), R.id.content_frame);
-```
 
-当然在Fragment之间跳转可以传递参数
-```Java
-Router.getInstance().openFragment("user/fengzhizi715/password/715",new FragmentOptions(getFragmentManager(),new Fragment2()), R.id.content_frame);
-```
+
+
+

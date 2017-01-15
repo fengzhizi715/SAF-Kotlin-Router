@@ -32,7 +32,7 @@ dependencies {
 #特性
 它提供了类似于rails的router功能，可以轻易地实现app的应用内跳转,包括Activity之间、Fragment之间实现相互跳转，并传递参数。
 
-这个框架的saf-router-compiler模块是用kotlin编写的。
+这个框架的saf-router-compiler模块是用`kotlin`编写的。
 
 #使用方法
 
@@ -44,7 +44,7 @@ dependencies {
 
 ```Java
 Router.getInstance().setContext(getApplicationContext()); // 这一步是必须的，用于初始化Router
-Router.getInstance().map("user/:user/password/:password", SecondActivity.class);
+Router.getInstance().map("user/:user/password/:password", DetailActivity.class);
 ```
 
 有时候，activity跳转还会有动画效果，那么我们可以这么做
@@ -53,7 +53,7 @@ Router.getInstance().map("user/:user/password/:password", SecondActivity.class);
 RouterOptions options = new RouterOptions();
 options.enterAnim = R.anim.slide_right_in;
 options.exitAnim = R.anim.slide_left_out;
-Router.getInstance().map("user/:user/password/:password", SecondActivity.class, options);
+Router.getInstance().map("user/:user/password/:password", DetailActivity.class, options);
 ```
 
 ###Annotation方式

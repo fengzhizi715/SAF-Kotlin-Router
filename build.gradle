@@ -21,7 +21,6 @@ buildscript {
 allprojects {
     repositories {
         jcenter()
-//        maven{url 'https://dl.bintray.com/fengzhizi715/maven/'}
     }
     //加上这些
     tasks.withType(Javadoc) {
@@ -122,5 +121,5 @@ task generaAllJar(dependsOn: ['buildRouter','buildRouterAnnotation','buildRouter
 
 defaultTasks 'generaAllJar'
 
-tasks.getByPath(":saf-router-compiler:bintrayUpload").enabled = false
-tasks.getByPath(":saf-router-annotation:bintrayUpload").enabled = false
+//tasks.getByPath(":saf-router-compiler:bintrayUpload").enabled = false
+//tasks.getByPath(":saf-router-annotation:bintrayUpload").enabled = false

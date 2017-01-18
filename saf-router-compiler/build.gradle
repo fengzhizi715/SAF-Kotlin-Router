@@ -33,7 +33,7 @@ publish{
     userOrg = 'fengzhizi715'
     groupId = 'com.safframework.router'
     artifactId = 'saf-router-compiler'
-    publishVersion = '1.0.0'
+    publishVersion = '1.0.2'
     desc = 'A compiler for SAF Router to find route'
     website = 'https://github.com/fengzhizi715/SAF-Kotlin-Router'
 }

@@ -121,5 +121,6 @@ task generaAllJar(dependsOn: ['buildRouter','buildRouterAnnotation','buildRouter
 
 defaultTasks 'generaAllJar'
 
-//tasks.getByPath(":saf-router-compiler:bintrayUpload").enabled = false
-//tasks.getByPath(":saf-router-annotation:bintrayUpload").enabled = false
+tasks.getByPath(":saf-router:bintrayUpload").enabled = false
+tasks.getByPath(":saf-router-compiler:bintrayUpload").enabled = false
+tasks.getByPath(":saf-router-annotation:bintrayUpload").enabled = false

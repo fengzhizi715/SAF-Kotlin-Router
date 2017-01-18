@@ -84,7 +84,7 @@ class RouterProcessor: AbstractProcessor() {
             val enterAnim = routerRule.enterAnim
             val exitAnim = routerRule.exitAnim
             if (routerUrls != null) {
-                for (routerUrl in routerUrls!!) {
+                for (routerUrl in routerUrls) {
                     if (enterAnim > 0 && exitAnim > 0) {
                         routerInitBuilder.addStatement("options = new \$T()", TypeUtils.ROUTER_OPTIONS)
                         routerInitBuilder.addStatement("options.enterAnim = " + enterAnim)

@@ -1,6 +1,13 @@
 # SAF-Kotlin-Router
 ![](logo.JPG)
 
+#最新版本
+
+模块|saf-router|saf-router-compiler|saf-router-annotation
+---|---|---|---
+最新版本|[![Download](https://img.shields.io/badge/Download-1.0.0-red.svg)](https://bintray.com/fengzhizi715/maven/saf-router/_latestVersion)|[![Download](https://img.shields.io/badge/Download-1.0.2-red.svg)](https://bintray.com/fengzhizi715/maven/saf-router-compiler/_latestVersion)|[![Download](https://img.shields.io/badge/Download-1.0.1-red.svg)](https://bintray.com/fengzhizi715/maven/saf-router-annotation/_latestVersion)
+
+
 #下载安装
 
 在根目录下的build.gradle中添加

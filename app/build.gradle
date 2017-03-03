@@ -1,6 +1,6 @@
 apply plugin: 'com.android.application'
-//apply plugin: 'com.neenbedankt.android-apt'
-apply plugin: 'plugin.test'
+apply plugin: 'com.neenbedankt.android-apt'
+apply plugin: 'com.safframework.router'
 
 android {
     compileSdkVersion 25

@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-apply plugin: 'com.neenbedankt.android-apt'
+//apply plugin: 'com.neenbedankt.android-apt'
 apply plugin: 'com.safframework.router'
 
 android {
@@ -29,7 +29,7 @@ buildscript{
         }
     }
     dependencies{
-        classpath 'com.safframework.router.gradle.plugin:test:1.0.0'
+        classpath 'com.safframework.gradle.plugin:router:1.0.0'
     }
 }
 

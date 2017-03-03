@@ -18,8 +18,8 @@ uploadArchives{
     repositories{
         mavenDeployer{
             repository(url:uri('../repo'))
-            pom.groupId = 'com.safframework.router.gradle.plugin' // 组名
-            pom.artifactId = 'test' // 插件名
+            pom.groupId = 'com.safframework.gradle.plugin' // 组名
+            pom.artifactId = 'router' // 插件名
             pom.version = '1.0.0' // 版本号
         }
     }

@@ -5,14 +5,14 @@
 
 ![](logo.JPG)
 
-#最新版本
+# 最新版本
 
 模块|saf-router|saf-router-compiler|saf-router-annotation
 ---|:-------------:|:-------------:|:-------------:
 最新版本|[![Download](https://img.shields.io/badge/Download-1.0.1-red.svg)](https://bintray.com/fengzhizi715/maven/saf-router/_latestVersion)|[![Download](https://img.shields.io/badge/Download-1.0.2-red.svg)](https://bintray.com/fengzhizi715/maven/saf-router-compiler/_latestVersion)|[![Download](https://img.shields.io/badge/Download-1.0.1-red.svg)](https://bintray.com/fengzhizi715/maven/saf-router-annotation/_latestVersion)
 
 
-#下载安装
+# 下载安装
 
 在根目录下的build.gradle中添加
 
@@ -41,14 +41,14 @@ dependencies {
 }
 ```
 
-#特性
+# 特性
 它提供了类似于rails的router功能，可以轻易地实现app的应用内跳转,包括Activity之间、Fragment之间实现相互跳转，并传递参数。
 
 这个框架的saf-router-compiler模块是用`kotlin`编写的。
 
-#使用方法
+# 使用方法
 
-##Activity跳转
+## Activity跳转
 
 它支持Annotation方式和非Annotation的方式来进行Activity页面跳转。使用Activity跳转时，必须在App的Application中做好router的映射。 
 
@@ -68,7 +68,7 @@ options.exitAnim = R.anim.slide_left_out;
 Router.getInstance().map("user/:user/password/:password", DetailActivity.class, options);
 ```
 
-###Annotation方式
+### Annotation方式
 在任意要跳转的目标Activity上，添加@RouterRule,它是编译时的注解。
 
 ```java
@@ -115,7 +115,7 @@ RouterManager.init(this);// 这一步是必须的，用于初始化Router
 
 ```
 
-###非Annotation方式
+### 非Annotation方式
 
 在Application中定义好router映射之后，activity之间跳转只需在activity中写下如下的代码，即可跳转到相应的Activity，并传递参数
 ```Java
@@ -133,7 +133,7 @@ Router.getInstance().open("user/fengzhizi715/password/715",new RouterChecker(){
  );
 ```
 
-##Fragment跳转
+## Fragment跳转
 Fragment之间的跳转也无须在Application中定义跳转映射。直接在某个Fragment写下如下的代码
 ```Java
 Router.getInstance().openFragment(new FragmentOptions(getFragmentManager(),new Fragment2()), R.id.content_frame);
@@ -144,7 +144,7 @@ Router.getInstance().openFragment(new FragmentOptions(getFragmentManager(),new F
 Router.getInstance().openFragment("user/fengzhizi715/password/715",new FragmentOptions(getFragmentManager(),new Fragment2()), R.id.content_frame);
 ```
 
-##其他跳转
+## 其他跳转
 单独跳转到某个网页，调用系统电话，调用手机上的地图app打开地图等无须在Application中定义跳转映射。
 
 ```Java
@@ -159,7 +159,7 @@ TODO
 ===
 1. 更优雅的API
 2. 增加降级策略
-3. 使用http/https地址时.可以直接跳转至使用浏览器
+3. 使用http/https地址时,可以直接跳转至使用浏览器
 
 License
 -------

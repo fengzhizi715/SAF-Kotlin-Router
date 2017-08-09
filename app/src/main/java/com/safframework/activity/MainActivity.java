@@ -1,17 +1,21 @@
 package com.safframework.activity;
 
-import android.app.Activity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 
+import com.safframework.router.Module;
+import com.safframework.router.Modules;
 import com.safframework.router.Router;
 
 /**
  * Created by Tony Shen on 2017/1/10.
  */
 
-public class MainActivity extends Activity {
+@Module(value = "main")
+@Modules(value = {"main","module1"})
+public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -30,6 +34,14 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Router.getInstance().open("detail/4");
+            }
+        });
+
+        Button button3 = (Button) findViewById(R.id.button3);
+        button3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Router.getInstance().open("module1/main");
             }
         });
     }

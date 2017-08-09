@@ -1,11 +1,10 @@
-apply plugin: 'com.android.application'
+apply plugin: 'com.android.library'
 apply plugin: 'com.neenbedankt.android-apt'
 
 android {
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
     defaultConfig {
-        applicationId "com.safframework.router"
         minSdkVersion 9
         targetSdkVersion 25
         versionCode 1
@@ -30,6 +29,4 @@ dependencies {
 
     compile project(':saf-router')
     apt project(':saf-router-compiler')
-
-    compile project(':app_module1')
 }

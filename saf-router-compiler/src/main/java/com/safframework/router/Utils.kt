@@ -37,14 +37,14 @@ fun isAbstract(annotatedClass: TypeElement): Boolean = annotatedClass.modifiers.
 
 fun error(messager: Messager?, msg: String?, vararg args: Any) {
 
-    if (msg==null) return;
+    if (msg==null) return
 
     messager?.printMessage(Diagnostic.Kind.ERROR, String.format(msg, *args))
 }
 
 fun info(messager: Messager?, msg: String?, vararg args: Any) {
 
-    if (msg==null) return;
+    if (msg==null) return
 
     messager?.printMessage(Diagnostic.Kind.NOTE, String.format(msg, *args))
 }

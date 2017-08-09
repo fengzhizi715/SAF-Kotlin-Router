@@ -30,7 +30,7 @@ class RouterProcessor: AbstractProcessor() {
     }
 
     /**
-     * @return 指定使用的 Java 版本。通常返回 SourceVersion.latestSupported()。
+     * @return 指定使用的 Java 版本,通常返回 SourceVersion.latestSupported()。
      */
     override fun getSupportedSourceVersion(): SourceVersion = SourceVersion.latestSupported()
 
@@ -46,10 +46,10 @@ class RouterProcessor: AbstractProcessor() {
     }
 
     override fun process(annotations: Set<TypeElement>, roundEnv: RoundEnvironment): Boolean {
-        val elements = roundEnv.getElementsAnnotatedWith(RouterRule::class.java)
+        val routerRuleElements = roundEnv.getElementsAnnotatedWith(RouterRule::class.java)
 
         try {
-            val type = getRouterTableInitializer(elements)
+            val type = generateDefaultRouterInit(routerRuleElements)
             if (type != null) {
                 JavaFile.builder("com.safframework.router", type).build().writeTo(mFiler)
             }
@@ -63,7 +63,7 @@ class RouterProcessor: AbstractProcessor() {
     }
 
     @Throws(ClassNotFoundException::class)
-    private fun getRouterTableInitializer(elements: Set<Element>?): TypeSpec? {
+    private fun generateDefaultRouterInit(elements: Set<Element>?): TypeSpec? {
         if (elements == null || elements.size == 0) {
             return null
         }

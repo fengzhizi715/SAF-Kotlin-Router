@@ -32,9 +32,7 @@ class RouterProcessor: AbstractProcessor() {
     /**
      * @return 指定使用的 Java 版本。通常返回 SourceVersion.latestSupported()。
      */
-    override fun getSupportedSourceVersion(): SourceVersion {
-        return SourceVersion.latestSupported()
-    }
+    override fun getSupportedSourceVersion(): SourceVersion = SourceVersion.latestSupported()
 
     /**
      * @return 指定哪些注解应该被注解处理器注册
@@ -58,7 +56,7 @@ class RouterProcessor: AbstractProcessor() {
         } catch (e: FilerException) {
             e.printStackTrace()
         } catch (e: Exception) {
-            Utils.error(mMessager, e.message)
+            error(mMessager, e.message)
         }
 
         return true
@@ -80,7 +78,7 @@ class RouterProcessor: AbstractProcessor() {
         elements.map {
             it as TypeElement
         }.filter(fun(it: TypeElement): Boolean {
-            return Utils.isValidClass(mMessager, it, "@RouterRule")
+            return isValidClass(mMessager, it, "@RouterRule")
         }).forEach {
             val routerRule = it.getAnnotation(RouterRule::class.java)
             val routerUrls = routerRule.url

@@ -69,7 +69,9 @@ class RouterProcessor: AbstractProcessor() {
 
         if (hasModules) {
             generateModulesRouterInit(moduleNames)
-        } else if (hasModule){
+        }
+
+        if (hasModule){
             generateModuleRouterMap(moduleName,roundEnv)
         } else {
             generateDefaultRouterInit(roundEnv)

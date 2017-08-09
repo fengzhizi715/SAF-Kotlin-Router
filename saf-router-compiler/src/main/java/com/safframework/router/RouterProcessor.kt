@@ -7,7 +7,6 @@ import com.squareup.javapoet.TypeSpec
 import java.util.*
 import javax.annotation.processing.*
 import javax.lang.model.SourceVersion
-import javax.lang.model.element.Element
 import javax.lang.model.element.Modifier
 import javax.lang.model.element.TypeElement
 import javax.lang.model.util.Elements
@@ -17,9 +16,9 @@ import javax.lang.model.util.Elements
  */
 class RouterProcessor: AbstractProcessor() {
 
-    var mFiler: Filer?=null //文件相关的辅助类
+    var mFiler: Filer?=null           //文件相关的辅助类
     var mElementUtils: Elements?=null //元素相关的辅助类
-    var mMessager: Messager?=null //日志相关的辅助类
+    var mMessager: Messager?=null     //日志相关的辅助类
 
     @Synchronized
     override fun init(processingEnv: ProcessingEnvironment) {
@@ -30,7 +29,7 @@ class RouterProcessor: AbstractProcessor() {
     }
 
     /**
-     * @return 指定使用的 Java 版本,通常返回 SourceVersion.latestSupported()。
+     * @return 指定使用的 Java 版本 通常返回 SourceVersion.latestSupported()。
      */
     override fun getSupportedSourceVersion(): SourceVersion = SourceVersion.latestSupported()
 
@@ -50,7 +49,6 @@ class RouterProcessor: AbstractProcessor() {
         var hasModule = false
         var hasModules = false
 
-
         // module
         var moduleName = "RouterMapping"
         val moduleList = roundEnv.getElementsAnnotatedWith(Module::class.java)
@@ -61,7 +59,7 @@ class RouterProcessor: AbstractProcessor() {
         }
 
         // modules
-        var moduleNames:Array<out String>?
+        var moduleNames:Array<out String>? = null
         var modulesList = roundEnv.getElementsAnnotatedWith(Modules::class.java)
         if (modulesList.isNotEmpty()) {
             val modules = modulesList.iterator().next()
@@ -69,30 +67,95 @@ class RouterProcessor: AbstractProcessor() {
             hasModules = true
         }
 
-        info(mMessager,"hasModule="+hasModule)
-        info(mMessager,"hasModules="+hasModules)
-
-        val routerRuleElements = roundEnv.getElementsAnnotatedWith(RouterRule::class.java)
-
-        try {
-            val type = generateDefaultRouterInit(routerRuleElements)
-            if (type != null) {
-                JavaFile.builder("com.safframework.router", type).build().writeTo(mFiler)
-            }
-        } catch (e: FilerException) {
-            e.printStackTrace()
-        } catch (e: Exception) {
-            error(mMessager, e.message)
+        if (hasModules) {
+            generateModulesRouterInit(moduleNames)
+        } else if (hasModule){
+            generateModuleRouterMap(moduleName,roundEnv)
+        } else {
+            generateDefaultRouterInit(roundEnv)
         }
 
         return true
     }
 
-    @Throws(ClassNotFoundException::class)
-    private fun generateDefaultRouterInit(elements: Set<Element>?): TypeSpec? {
-        if (elements == null || elements.size == 0) {
-            return null
+    private fun generateModulesRouterInit(moduleNames: Array<out String>?) {
+
+        if (moduleNames == null) return
+
+        val initMethod = MethodSpec.methodBuilder("init")
+                .addModifiers(Modifier.PUBLIC, Modifier.STATIC)
+                .addParameter(TypeUtils.CONTEXT, "context")
+
+        initMethod.addStatement("\$T.getInstance().setContext(context)", TypeUtils.ROUTER)
+
+        for (module in moduleNames) {
+            initMethod.addStatement("RouterMapping_$module.map()")
         }
+
+        val routerInit = TypeSpec.classBuilder("RouterManager")
+                .addModifiers(Modifier.PUBLIC, Modifier.FINAL)
+                .addMethod(initMethod.build())
+                .build()
+        try {
+            JavaFile.builder("com.safframework.router", routerInit)
+                    .build()
+                    .writeTo(mFiler)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    private fun  generateModuleRouterMap(moduleName: String, roundEnv: RoundEnvironment) {
+        val routerRuleElements = roundEnv.getElementsAnnotatedWith(RouterRule::class.java)
+
+        if (routerRuleElements.isEmpty()) return
+
+        val routerMapBuilder = MethodSpec.methodBuilder("map")
+                .addModifiers(Modifier.PUBLIC, Modifier.STATIC)
+
+        routerMapBuilder.addStatement("\$T options = null", TypeUtils.ROUTER_OPTIONS)
+
+        routerRuleElements.map {
+            it as TypeElement
+        }.filter(fun(it: TypeElement): Boolean {
+            return isValidClass(mMessager, it, "@RouterRule")
+        }).forEach {
+            val routerRule = it.getAnnotation(RouterRule::class.java)
+            val routerUrls = routerRule.url
+            val enterAnim = routerRule.enterAnim
+            val exitAnim = routerRule.exitAnim
+            if (routerUrls != null) {
+                for (routerUrl in routerUrls) {
+                    if (enterAnim > 0 && exitAnim > 0) {
+                        routerMapBuilder.addStatement("options = new \$T()", TypeUtils.ROUTER_OPTIONS)
+                        routerMapBuilder.addStatement("options.enterAnim = " + enterAnim)
+                        routerMapBuilder.addStatement("options.exitAnim = " + exitAnim)
+                        routerMapBuilder.addStatement("\$T.getInstance().map(\$S, \$T.class,options)", TypeUtils.ROUTER, routerUrl, ClassName.get(it))
+                    } else {
+                        routerMapBuilder.addStatement("\$T.getInstance().map(\$S, \$T.class)", TypeUtils.ROUTER, routerUrl, ClassName.get(it))
+                    }
+                }
+            }
+        }
+
+        val routerMapMethod = routerMapBuilder.build()
+
+        val type =  TypeSpec.classBuilder(moduleName)
+                .addModifiers(Modifier.PUBLIC, Modifier.FINAL)
+                .addMethod(routerMapMethod)
+                .build()
+
+        if (type != null) {
+            JavaFile.builder("com.safframework.router", type).build().writeTo(mFiler)
+        }
+    }
+
+    @Throws(ClassNotFoundException::class)
+    private fun generateDefaultRouterInit(roundEnv: RoundEnvironment) {
+
+        val routerRuleElements = roundEnv.getElementsAnnotatedWith(RouterRule::class.java)
+
+        if (routerRuleElements.isEmpty()) return
 
         val routerInitBuilder = MethodSpec.methodBuilder("init")
                 .addModifiers(Modifier.PUBLIC, Modifier.STATIC)
@@ -101,7 +164,7 @@ class RouterProcessor: AbstractProcessor() {
         routerInitBuilder.addStatement("\$T.getInstance().setContext(context)", TypeUtils.ROUTER)
         routerInitBuilder.addStatement("\$T options = null", TypeUtils.ROUTER_OPTIONS)
 
-        elements.map {
+        routerRuleElements.map {
             it as TypeElement
         }.filter(fun(it: TypeElement): Boolean {
             return isValidClass(mMessager, it, "@RouterRule")
@@ -126,9 +189,13 @@ class RouterProcessor: AbstractProcessor() {
 
         val routerInitMethod = routerInitBuilder.build()
 
-        return TypeSpec.classBuilder("RouterManager")
-                .addModifiers(Modifier.PUBLIC)
+        val type =  TypeSpec.classBuilder("RouterManager")
+                .addModifiers(Modifier.PUBLIC, Modifier.FINAL)
                 .addMethod(routerInitMethod)
                 .build()
+
+        if (type != null) {
+            JavaFile.builder("com.safframework.router", type).build().writeTo(mFiler)
+        }
     }
 }

@@ -40,21 +40,24 @@ object Utils {
         return annotatedClass.modifiers.contains(Modifier.ABSTRACT)
     }
 
-    @JvmStatic fun error(messager: Messager?, msg: String?, vararg args: Any) {
+    @JvmStatic
+    fun error(messager: Messager?, msg: String?, vararg args: Any) {
 
         if (msg==null) return;
 
         messager?.printMessage(Diagnostic.Kind.ERROR, String.format(msg, *args))
     }
 
-    @JvmStatic fun info(messager: Messager?, msg: String?, vararg args: Any) {
+    @JvmStatic
+    fun info(messager: Messager?, msg: String?, vararg args: Any) {
 
         if (msg==null) return;
 
         messager?.printMessage(Diagnostic.Kind.NOTE, String.format(msg, *args))
     }
 
-    @JvmStatic fun isValidClass(messager: Messager?, annotatedClass: TypeElement, annotationName: String): Boolean {
+    @JvmStatic
+    fun isValidClass(messager: Messager?, annotatedClass: TypeElement, annotationName: String): Boolean {
 
         if (!isPublic(annotatedClass)) {
             val message = String.format("Classes annotated with %s must be public.", annotationName)

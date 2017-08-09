@@ -60,6 +60,8 @@ public class Router {
 	public Context getContext() {
 		return context;
 	}
+
+	/******************************** map 相关操作 ********************************／
 	
 	/**
 	 * @param format 形如"user/:user/password/:password"这样的格式，其中user、password为参数名
@@ -111,12 +113,8 @@ public class Router {
 	public void openURI(String url,Context context,Bundle extras) {
 		openURI(url,context,extras,Intent.FLAG_ACTIVITY_NEW_TASK);
 	}
-	
-	public void openURI(String url,Context context,Bundle extras, int flags) {
-		openURI(url,context,extras,null,flags);
-	}
 
-	public void openURI(String url,Context context,Bundle extras, RouterPoint point, int flags) {
+	public void openURI(String url,Context context,Bundle extras, int flags) {
 		if (context == null) {
 			throw new RouterException("You need to supply a context for Router " + this.toString());
 		}
@@ -127,18 +125,11 @@ public class Router {
 			intent.putExtras(extras);
 		}
 		
-		// frankswu : 在start之前增加相应的接口可以做类似埋点的工作
-		if (point != null) {
-			point.beforeRouter(url, extras);
-		}
-		
 		context.startActivity(intent);
-		
-		if (point != null) {
-			point.afterRouter(url, extras);
-		}
 	}
-	
+
+	/******************************** open 相关操作 ********************************／
+
 	/**
 	 * 跳转到某个activity并传值
 	 * <pre>
@@ -175,23 +166,15 @@ public class Router {
 		this.open(url, context, null,checker);
 	}
 	
-	public void open(String url,Context context,RouterPoint point) {
-		this.open(url, context, null ,point);
-	}
-	
 	public void open(String url,Context context,Bundle extras) {
-		open(url,context,extras,Intent.FLAG_ACTIVITY_NEW_TASK,null,null);    // 默认的跳转类型,将Activity放到一个新的Task中
+		open(url,context,extras,Intent.FLAG_ACTIVITY_NEW_TASK,null);    // 默认的跳转类型,将Activity放到一个新的Task中
 	}
 	
 	public void open(String url,Context context,Bundle extras,RouterChecker checker) {
-		open(url,context,extras,Intent.FLAG_ACTIVITY_NEW_TASK,checker,null); // 默认的跳转类型,将Activity放到一个新的Task中
+		open(url,context,extras,Intent.FLAG_ACTIVITY_NEW_TASK,checker); // 默认的跳转类型,将Activity放到一个新的Task中
 	}
 	
-	public void open(String url,Context context,Bundle extras,RouterPoint point) {
-		open(url,context,extras,Intent.FLAG_ACTIVITY_NEW_TASK,null,point);   // 默认的跳转类型,将Activity放到一个新的Task中
-	}
-	
-	public void open(String url,Context context,Bundle extras,int flags,RouterChecker checker, RouterPoint point) {
+	public void open(String url,Context context,Bundle extras,int flags,RouterChecker checker) {
 		if (context == null) {
 			throw new RouterException("You need to supply a context for Router "+ this.toString());
 		}
@@ -212,22 +195,20 @@ public class Router {
 		}
 		this.addFlagsToIntent(intent, context, flags);
 		
-		// frankswu : 在start之前增加相应的接口可以做类似埋点的工作
-		if (point != null) {
-			point.beforeRouter(url, extras);
-		}
-		
 		context.startActivity(intent);
-		
-		if (point != null) {
-			point.afterRouter(url, extras);
-		}
 		
 		if (options.enterAnim>0 && options.exitAnim>0) {
 			((Activity)context).overridePendingTransition(options.enterAnim, options.exitAnim);
 		}
 	}
-	
+
+	/******************************** open 相关操作 ********************************／
+
+	 /* *
+	 *
+	 * @param fragmentOptions
+	 * @param containerViewId
+	 */
 	public void openFragment(FragmentOptions fragmentOptions, int containerViewId) {
 		if (!(fragmentOptions != null
 				&& fragmentOptions.mFragmentInstnace != null
@@ -241,7 +222,7 @@ public class Router {
 		fragmentOptions.fragmentManager.beginTransaction().replace(containerViewId , fragmentOptions.mFragmentInstnace).addToBackStack(null).commit();
 	}
 	
-	public void openFragment(String url,FragmentOptions fragmentOptions,int containerViewId,RouterPoint point) {
+	public void openFragment(String url,FragmentOptions fragmentOptions,int containerViewId) {
 		if (!(fragmentOptions != null
 				&& fragmentOptions.mFragmentInstnace != null
 				&& fragmentOptions.fragmentManager != null))
@@ -250,16 +231,7 @@ public class Router {
 		Fragment fragment = fragmentOptions.mFragmentInstnace;
 		fragment = parseFragmentUrl(url,fragmentOptions);
 		
-		// frankswu : 在fragment跳转之前增加相应的接口可以做类似埋点的工作
-		if (point != null) {
-			point.beforeRouter(url, fragmentOptions.mArg);
-		}
-		
 		fragmentOptions.fragmentManager.beginTransaction().replace(containerViewId , fragment).addToBackStack(null).commit();
-		
-		if (point != null) {
-			point.afterRouter(url, fragmentOptions.mArg);
-		}
 	}
 	
 	private Fragment parseFragmentUrl(String url, FragmentOptions fragmentOptions) {
@@ -376,20 +348,10 @@ public class Router {
 	 *
 	 */
 	public interface RouterChecker {
-		//router跳转前的先判断是否满足跳转的条件,false表示不跳转，true表示进行跳转到下一个activity
+
+		/**
+		 * router跳转前的先判断是否满足跳转的条件,false表示不跳转，true表示进行跳转到下一个activity
+		 */
 		boolean doCheck(); 
-	}
-
-	/**
-	 * 提供埋点的便利接口，支持open、openURI和openFragment方法
-	 * @author frankswu
-	 *
-	 */
-	public interface RouterPoint {
-
-		void beforeRouter(String url, Bundle extras);
-
-		void afterRouter(String url, Bundle extras);
-
 	}
 }

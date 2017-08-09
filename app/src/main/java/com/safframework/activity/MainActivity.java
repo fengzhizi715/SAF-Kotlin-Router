@@ -46,10 +46,10 @@ public class MainActivity extends AppCompatActivity {
         });
 
         Button button4 = (Button) findViewById(R.id.button4);
-        button3.setOnClickListener(new View.OnClickListener() {
+        button4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Router.getInstance().open("module1/main");
+                Router.getInstance().open("module1/second/123");
             }
         });
     }

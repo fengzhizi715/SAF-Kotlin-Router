@@ -1,5 +1,5 @@
 include ':app'
-include ':app_module1'
+include ':app-module1'
 
 include ':saf-router-annotation'
 include ':saf-router-compiler'

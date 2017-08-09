@@ -31,5 +31,5 @@ dependencies {
     compile project(':saf-router')
     apt project(':saf-router-compiler')
 
-    compile project(':app_module1')
+    compile project(':app-module1')
 }

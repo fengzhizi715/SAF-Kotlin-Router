@@ -44,6 +44,14 @@ public class MainActivity extends AppCompatActivity {
                 Router.getInstance().open("module1/main");
             }
         });
+
+        Button button4 = (Button) findViewById(R.id.button4);
+        button3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Router.getInstance().open("module1/main");
+            }
+        });
     }
 
 }

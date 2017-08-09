@@ -21,7 +21,8 @@ class RouterProcessor: AbstractProcessor() {
     var mElementUtils: Elements?=null //元素相关的辅助类
     var mMessager: Messager?=null //日志相关的辅助类
 
-    @Synchronized override fun init(processingEnv: ProcessingEnvironment) {
+    @Synchronized
+    override fun init(processingEnv: ProcessingEnvironment) {
         super.init(processingEnv)
         mFiler = processingEnv.filer
         mElementUtils = processingEnv.elementUtils
@@ -41,6 +42,8 @@ class RouterProcessor: AbstractProcessor() {
     override fun getSupportedAnnotationTypes(): Set<String> {
         val types = LinkedHashSet<String>()
         types.add(RouterRule::class.java.canonicalName)
+        types.add(Module::class.java.canonicalName)
+        types.add(Modules::class.java.canonicalName)
         return types
     }
 

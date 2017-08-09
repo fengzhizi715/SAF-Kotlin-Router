@@ -14,7 +14,7 @@ import com.safframework.router.Router;
  */
 
 @Module(value = "main")
-@Modules(value = {"main","module1"})
+@Modules(value = {"main","module1","module2"})
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -50,6 +50,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Router.getInstance().open("module1/second/123");
+            }
+        });
+
+        Button button5 = (Button) findViewById(R.id.button5);
+        button5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Router.getInstance().open("module2/main");
             }
         });
     }

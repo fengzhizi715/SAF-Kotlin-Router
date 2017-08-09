@@ -28,4 +28,10 @@
         android:layout_width="160dp"
         android:layout_height="60dp"
         android:text="this is butto4"/>
+
+    <Button
+        android:id="@+id/button5"
+        android:layout_width="160dp"
+        android:layout_height="60dp"
+        android:text="this is butto5"/>
 </LinearLayout>

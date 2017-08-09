@@ -157,9 +157,10 @@ Router.getInstance().openURI("geo:0,0?q=31,121");
 
 TODO
 ===
-1. 更优雅的API
-2. 增加降级策略
-3. 使用http/https地址时,可以直接跳转至使用浏览器
+1. 支持模块化
+2. 更优雅的API
+3. 增加降级策略
+4. 使用http/https地址时,可以直接跳转至使用浏览器
 
 License
 -------

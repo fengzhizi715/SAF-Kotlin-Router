@@ -2,7 +2,7 @@
 
 buildscript {
     System.properties['com.android.build.gradle.overrideVersionCheck'] = 'true'
-    ext.kotlin_version = '1.0.5-3'
+    ext.kotlin_version = '1.1.0'
 
     repositories {
         jcenter()
@@ -35,91 +35,6 @@ task clean(type: Delete) {
     delete rootProject.buildDir
 }
 
-//genera aar
-
-Properties properties = new Properties()
-
-File localPropertiesFile = project.rootProject.file("local.properties");
-if (localPropertiesFile.exists()) {
-    properties.load(localPropertiesFile.newDataInputStream())
-}
-File projectPropertiesFile = project.rootProject.file("project.properties");
-if (projectPropertiesFile.exists()) {
-    properties.load(projectPropertiesFile.newDataInputStream())
-}
-
-def safRouter = properties.getProperty("project.saf_router")
-def safRouterAnnotation = properties.getProperty("project.saf_router_annotation")
-def safRouterCompiler = properties.getProperty("project.saf_router_compiler")
-
-def classPath = properties.getProperty("project.class.path")
-def javaClassPath = properties.getProperty("project.java.class.path")
-
-def safRouterPath = [project.findProject(safRouter).buildDir.absolutePath + classPath];
-def safRouterAnnotationPath = [project.findProject(safRouterAnnotation).buildDir.absolutePath + javaClassPath];
-def safRouterCompilerPath = [project.findProject(safRouterCompiler).buildDir.absolutePath + javaClassPath];
-
-task buildRouter( type: Jar) {
-
-    archiveName = 'SAF-kotlin-router-1.0.jar'
-
-    //初始化资源路径集
-    from safRouterPath
-
-    //去除路径集下部分的资源
-    exclude "**/BuildConfig.class"
-    exclude "**/Manifest.class"
-    exclude "**/R.class"
-    exclude "**/R\$*.class"
-
-    //只导入资源路径集下的部分资源
-    include "com/safframework/**/*.class"
-    destinationDir = file('build/outputs/')
-}
-
-task buildRouterAnnotation( type: Jar) {
-
-    archiveName = 'SAF-kotlin-router-annotation-1.0.jar'
-
-    //初始化资源路径集
-    from  safRouterAnnotationPath
-
-    //去除路径集下部分的资源
-    exclude "**/BuildConfig.class"
-    exclude "**/Manifest.class"
-    exclude "**/R.class"
-    exclude "**/R\$*.class"
-
-    //只导入资源路径集下的部分资源
-    include "com/safframework/**/*.class"
-    destinationDir = file('build/outputs/')
-}
-
-task buildRouterCompiler( type: Jar) {
-
-    archiveName = 'SAF-kotlin-router-compiler-1.0.jar'
-
-    //初始化资源路径集
-    from  safRouterCompilerPath
-
-    //去除路径集下部分的资源
-    exclude "**/BuildConfig.class"
-    exclude "**/Manifest.class"
-    exclude "**/R.class"
-    exclude "**/R\$*.class"
-
-    //只导入资源路径集下的部分资源
-    include "com/safframework/**/*.class"
-    include "META-INF/services/javax.annotation.processing.Processor"
-    destinationDir = file('build/outputs/')
-}
-
-//生成所有的jar包 编译前，请手动build一下工程，以生成中间文件
-task generaAllJar(dependsOn: ['buildRouter','buildRouterAnnotation','buildRouterCompiler']) {
-    logger.info("all build finish!");
-}
-
-defaultTasks 'generaAllJar'
 
 tasks.getByPath(":saf-router:bintrayUpload").enabled = false
 tasks.getByPath(":saf-router-compiler:bintrayUpload").enabled = false

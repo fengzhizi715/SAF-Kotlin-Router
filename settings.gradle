@@ -1,1 +1,4 @@
-include ':app', ':saf-router-annotation', ':saf-router-compiler', ':saf-router', ':gradleplugin'
+include ':app'
+include ':saf-router-annotation'
+include ':saf-router-compiler'
+include ':saf-router'

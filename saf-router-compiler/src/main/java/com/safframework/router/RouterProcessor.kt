@@ -46,6 +46,32 @@ class RouterProcessor: AbstractProcessor() {
     }
 
     override fun process(annotations: Set<TypeElement>, roundEnv: RoundEnvironment): Boolean {
+
+        var hasModule = false
+        var hasModules = false
+
+
+        // module
+        var moduleName = "RouterMapping"
+        val moduleList = roundEnv.getElementsAnnotatedWith(Module::class.java)
+        if (moduleList.isNotEmpty()) {
+            var annotation = moduleList.iterator().next().getAnnotation(Module::class.java)
+            moduleName = moduleName + "_" + annotation.value;
+            hasModule = true
+        }
+
+        // modules
+        var moduleNames:Array<out String>?
+        var modulesList = roundEnv.getElementsAnnotatedWith(Modules::class.java)
+        if (modulesList.isNotEmpty()) {
+            val modules = modulesList.iterator().next()
+            moduleNames = modules.getAnnotation(Modules::class.java).value
+            hasModules = true
+        }
+
+        info(mMessager,"hasModule="+hasModule)
+        info(mMessager,"hasModules="+hasModules)
+
         val routerRuleElements = roundEnv.getElementsAnnotatedWith(RouterRule::class.java)
 
         try {

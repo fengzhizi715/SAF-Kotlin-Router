@@ -9,8 +9,7 @@
 
 模块|saf-router|saf-router-compiler|saf-router-annotation
 ---|:-------------:|:-------------:|:-------------:
-最新版本|[![Download](https://img.shields.io/badge/Download-1.0.1-red.svg)](https://bintray.com/fengzhizi715/maven/saf-router/_latestVersion)|[![Download](https://img.shields.io/badge/Download-1.0.2-red.svg)](https://bintray.com/fengzhizi715/maven/saf-router-compiler/_latestVersion)|[![Download](https://img.shields.io/badge/Download-1.0.1-red.svg)](https://bintray.com/fengzhizi715/maven/saf-router-annotation/_latestVersion)
-
+最新版本|[ ![Download](https://api.bintray.com/packages/fengzhizi715/maven/saf-router/images/download.svg) ](https://bintray.com/fengzhizi715/maven/saf-router/_latestVersion)|[ ![Download](https://api.bintray.com/packages/fengzhizi715/maven/saf-router-compiler/images/download.svg) ](https://bintray.com/fengzhizi715/maven/saf-router-compiler/_latestVersion)|[ ![Download](https://api.bintray.com/packages/fengzhizi715/maven/saf-router-annotation/images/download.svg) ](https://bintray.com/fengzhizi715/maven/saf-router-annotation/_latestVersion)
 
 # 下载安装
 
@@ -35,8 +34,8 @@ apply plugin: 'com.neenbedankt.android-apt'
 ...
 
 dependencies {
-    compile 'com.safframework.router:saf-router:1.0.1'
-    apt 'com.safframework.router:saf-router-compiler:1.0.2'
+    compile 'com.safframework.router:saf-router:1.1.0'
+    apt 'com.safframework.router:saf-router-compiler:1.1.0'
     ...
 }
 ```
@@ -157,10 +156,9 @@ Router.getInstance().openURI("geo:0,0?q=31,121");
 
 TODO
 ===
-1. 支持模块化
-2. 更优雅的API
-3. 增加降级策略
-4. 使用http/https地址时,可以直接跳转至使用浏览器
+1. 更优雅的API
+2. 增加降级策略
+3. 使用http/https地址时,可以直接跳转至使用浏览器
 
 License
 -------

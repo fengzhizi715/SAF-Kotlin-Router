@@ -79,6 +79,8 @@ public class Router {
 		this.routes.put(format, options);
 	}
 
+	/******************************** openURI 相关操作 ********************************／
+
 	/**
 	 * 跳转到网页，如下：
 	 * <pre>
@@ -202,7 +204,50 @@ public class Router {
 		}
 	}
 
-	/******************************** open 相关操作 ********************************／
+	/******************************** openForResult 相关操作 ********************************／
+
+	/**
+	 *
+	 * @param url
+	 * @param context
+	 * @param requestCode
+	 */
+	public void openForResult(String url,Activity context,int requestCode) {
+		this.openForResult(url,context,requestCode,null);
+	}
+
+	public void openForResult(String url,Activity context,int requestCode,RouterChecker checker) {
+		this.openForResult(url,context,requestCode,null,checker);
+	}
+
+	public void openForResult(String url,Activity context,int requestCode,Bundle extras,RouterChecker checker) {
+		if (context == null) {
+			throw new RouterException("You need to supply a context for Router "+ this.toString());
+		}
+
+		if (checker!=null && !checker.doCheck()) {
+			return;
+		}
+
+		RouterParameter param = parseUrl(url);
+		RouterParameter.RouterOptions options = param.routerOptions;
+
+		Intent intent = this.parseRouterParameter(param);
+		if (intent == null) {
+			return;
+		}
+		if (extras != null) {
+			intent.putExtras(extras);
+		}
+
+		context.startActivityForResult(intent,requestCode);
+
+		if (options.enterAnim>0 && options.exitAnim>0) {
+			context.overridePendingTransition(options.enterAnim, options.exitAnim);
+		}
+	}
+
+	/******************************** openFragment 相关操作 ********************************／
 
 	 /* *
 	 *

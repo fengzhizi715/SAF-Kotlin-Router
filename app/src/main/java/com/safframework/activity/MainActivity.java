@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
         button2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Router.getInstance().open("detail/4");
+                Router.getInstance().openForResult("detail/4",MainActivity.this,123);
             }
         });
 

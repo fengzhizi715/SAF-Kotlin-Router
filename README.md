@@ -154,7 +154,26 @@ Router.getInstance().openURI("tel://18662430000");
 Router.getInstance().openURI("geo:0,0?q=31,121");
 ```
 
-## 4. 模块化使用
+## 4. 模块化
+
+## 5. 支持Kotlin项目
+在module目录下的build.gradle中添加
+
+```groovy
+apply plugin: 'kotlin-kapt'
+
+...
+
+dependencies {
+    compile 'com.safframework.router:saf-router:1.1.1'
+    kapt 'com.safframework.router:saf-router-compiler:1.1.0'
+    ...
+}
+```
+
+注意，apply plugin: 'com.neenbedankt.android-apt' 无需再使用了。
+
+
 
 
 TODO

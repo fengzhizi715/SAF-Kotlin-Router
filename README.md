@@ -41,7 +41,7 @@ dependencies {
 ```
 
 # 特性
-它提供了类似于rails的router功能，可以轻易地实现app的应用内跳转,包括Activity之间、Fragment之间实现相互跳转，并传递参数。
+它早期参考了rails的router功能，可以非常简单地实现app的应用内跳转,包括Activity之间、Fragment之间实现相互跳转，并传递参数。
 
 这个框架的saf-router-compiler模块是用`kotlin`编写的。
 
@@ -67,7 +67,7 @@ options.exitAnim = R.anim.slide_left_out;
 Router.getInstance().map("user/:user/password/:password", DetailActivity.class, options);
 ```
 
-### Annotation方式
+### 1.1 Annotation方式
 在任意要跳转的目标Activity上，添加@RouterRule,它是编译时的注解。
 
 ```java
@@ -87,9 +87,9 @@ public class SecondActivity extends Activity {
 }
 
 ```
-而且，使用@RouterRule也支持跳转的动画效果。
+而且，使用`@RouterRule`也支持跳转的动画效果。
 
-用Annotation方式来进行页面跳转时，Application无需做router的映射。因为，saf-router-compiler模块已经在编译时生成了一个类RouterManager。它长得形如：
+用Annotation方式来进行页面跳转时，Application无需做router的映射。因为，saf-router-compiler模块已经在编译时生成了一个RouterManager类，它大概是这样的：
 
 ```java
 package com.safframework.router;
@@ -114,9 +114,9 @@ RouterManager.init(this);// 这一步是必须的，用于初始化Router
 
 ```
 
-### 非Annotation方式
+### 1.2 非Annotation方式
 
-在Application中定义好router映射之后，activity之间跳转只需在activity中写下如下的代码，即可跳转到相应的Activity，并传递参数
+在Application中定义好router的映射之后，activity之间跳转只需在activity中写下如下的代码，即可跳转到相应的Activity，并传递参数
 ```Java
 Router.getInstance().open("user/fengzhizi715/password/715");
 ```

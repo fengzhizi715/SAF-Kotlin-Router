@@ -27,6 +27,6 @@ dependencies {
     compile 'com.android.support:appcompat-v7:25.0.1'
     testCompile 'junit:junit:4.12'
 
-    compile project(':saf-router')
-    apt project(':saf-router-compiler')
+    compile 'com.safframework.router:saf-router:1.1.1'
+    apt 'com.safframework.router:saf-router-compiler:1.1.0'
 }

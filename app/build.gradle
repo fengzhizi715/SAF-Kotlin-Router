@@ -5,7 +5,7 @@ android {
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
     defaultConfig {
-        applicationId "com.safframework.router"
+        applicationId "com.safframework.router.demo"
         minSdkVersion 9
         targetSdkVersion 25
         versionCode 1
@@ -28,8 +28,8 @@ dependencies {
     compile 'com.android.support:appcompat-v7:25.0.1'
     testCompile 'junit:junit:4.12'
 
-    compile project(':saf-router')
-    apt project(':saf-router-compiler')
+    compile 'com.safframework.router:saf-router:1.1.1'
+    apt 'com.safframework.router:saf-router-compiler:1.1.0'
 
     compile project(':app-module1')
     compile project(':app-module2')

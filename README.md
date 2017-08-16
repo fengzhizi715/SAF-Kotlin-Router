@@ -159,9 +159,14 @@ Router.getInstance().openURI("geo:0,0?q=31,121");
 ```
 
 ## 4. 模块化
+1.1.0版本之后新增了@Module和@Modules注解
+
+* 每个使用了 @RouterRule 的 module 都要添加 apt 依赖
+* 每个 module(包含主项目) 都要添加一个 @Module(name) 的注解在任意类上面，name 是项目的名称
+* 主项目要添加一个 @Modules({name0, name1, name2}) 的注解，指定所有的 module 名称集合
 
 ## 5. 支持Kotlin项目
-在module目录下的build.gradle中添加
+对于Kotlin的项目或者Activity使用Kotlin来编写的，需要在module目录下的build.gradle中添加
 
 ```groovy
 apply plugin: 'kotlin-kapt'
@@ -175,7 +180,7 @@ dependencies {
 }
 ```
 
-注意，apply plugin: 'com.neenbedankt.android-apt' 无需再使用了。
+注意此时，apply plugin: 'com.neenbedankt.android-apt' 无需再使用了。
 
 # 关键方法
 函数|作用|

@@ -109,7 +109,7 @@ public class RouterManager {
 }
 ```
 
-Application只需做如下调用：
+Application中只需做一句话的调用：
 
 ```java
 RouterManager.init(this);// 这一步是必须的，用于初始化Router
@@ -135,7 +135,7 @@ Router.getInstance().open("user/fengzhizi715/password/715",new RouterChecker(){
 ```
 
 ## 2. Fragment跳转
-Fragment之间的跳转也无须在Application中定义跳转映射。直接在某个Fragment写下如下的代码
+Fragment之间的跳转无须在Application中定义跳转的映射。可以直接在某个Fragment写下如下的代码
 
 ```Java
 Router.getInstance().openFragment(new FragmentOptions(getFragmentManager(),new Fragment2()), R.id.content_frame);

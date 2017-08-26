@@ -65,6 +65,10 @@ public class Router {
 		return context;
 	}
 
+	/**
+	 * 设置全局错误的Activity，如果路由服务找不到对应的Activity则跳转到errorActivity，防止app引起crash，它是一种降级策略。
+	 * @param errorActivityClass
+	 */
 	public void setErrorActivity(Class errorActivityClass) {
 		this.errorActivityClass = errorActivityClass;
 	}

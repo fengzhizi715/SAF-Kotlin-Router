@@ -4,6 +4,7 @@
 package com.safframework.router;
 
 import android.app.Activity;
+import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -200,7 +201,9 @@ public class Router {
 		context.startActivity(intent);
 		
 		if (options.enterAnim>0 && options.exitAnim>0) {
-			((Activity)context).overridePendingTransition(options.enterAnim, options.exitAnim);
+			if (context instanceof Activity) {
+				((Activity)context).overridePendingTransition(options.enterAnim, options.exitAnim);
+			}
 		}
 	}
 

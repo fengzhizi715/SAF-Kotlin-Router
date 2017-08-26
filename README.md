@@ -159,7 +159,9 @@ Router.getInstance().openURI("geo:0,0?q=31,121");
 ```
 
 ## 4. 模块化
-1.1.0版本之后新增了@Module和@Modules注解
+1.1.0版本之后新增了@Module和@Modules注解为了支持模块化的架构。
+
+模块化架构需要注意：
 
 * 每个使用了 @RouterRule 的 module 都要添加 apt 依赖
 * 每个 module(包含主项目) 都要添加一个 @Module(name) 的注解在任意类上面，name 是项目的名称

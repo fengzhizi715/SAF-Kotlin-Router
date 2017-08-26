@@ -184,6 +184,10 @@ dependencies {
 
 注意此时，apply plugin: 'com.neenbedankt.android-apt' 无需再使用了。
 
+## 6.降级策略
+Router新增了一个方法setErrorActivity(), 可以设置一个自定义的全局错误的Activity，如果路由服务找不到对应的Activity则跳转到这个errorActivity，防止app引起crash，所以说它是一种简单的降级策略。
+
+
 # 关键方法
 函数|作用|
 ---|:-------------

@@ -4,7 +4,6 @@
 package com.safframework.router;
 
 import android.app.Activity;
-import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -16,7 +15,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import kotlin.PreconditionsKt;
 
 /**
  * 要使用Router功能时，必须在application中做好router的映射<br>

@@ -27,8 +27,8 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
 
-    compile 'com.safframework.router:saf-router:1.1.1'
-    kapt 'com.safframework.router:saf-router-compiler:1.1.0'
+    compile project(':saf-router')
+    kapt project(':saf-router-compiler')
 
     compile 'com.android.support:appcompat-v7:25.0.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'

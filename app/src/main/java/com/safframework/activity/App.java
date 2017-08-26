@@ -2,6 +2,7 @@ package com.safframework.activity;
 
 import android.app.Application;
 
+import com.safframework.router.Router;
 import com.safframework.router.RouterManager;
 
 /**
@@ -13,5 +14,7 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         RouterManager.init(this);// 这一步是必须的，用于初始化Router
+
+        Router.getInstance().setErrorActivity(ErrorActivity.class);
     }
 }

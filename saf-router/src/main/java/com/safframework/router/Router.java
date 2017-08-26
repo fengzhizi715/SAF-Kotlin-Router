@@ -16,6 +16,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import kotlin.PreconditionsKt;
+
 /**
  * 要使用Router功能时，必须在application中做好router的映射<br>
  * 从某个Activity跳转到SecondActivity需要传递user、password2个参数，需要做这样的映射
@@ -43,7 +45,8 @@ public class Router {
 	
 	private Context context;
 	private LruCache<String, RouterParameter> cachedRoutes = new LruCache<String, RouterParameter>(DEFAULT_CACHE_SIZE); // 缓存跳转的参数
-	private final Map<String, RouterParameter.RouterOptions> routes = new HashMap<String, RouterParameter.RouterOptions>();                             // 存放Intent之间跳转的route
+	private final Map<String, RouterParameter.RouterOptions> routes = new HashMap<String, RouterParameter.RouterOptions>();           // 存放Intent之间跳转的route
+	private Class errorActivityClass;
 	
 	private static final Router router = new Router();
 	
@@ -60,6 +63,10 @@ public class Router {
 
 	public Context getContext() {
 		return context;
+	}
+
+	public void setErrorActivity(Class errorActivityClass) {
+		this.errorActivityClass = errorActivityClass;
 	}
 
 	/******************************** map 相关操作 ********************************／
@@ -317,8 +324,10 @@ public class Router {
 		RouterParameter.RouterOptions options = param.routerOptions;
 		Intent intent = new Intent();
 
-		for (Entry<String, String> entry : param.openParams.entrySet()) {
-			intent.putExtra(entry.getKey(), entry.getValue());
+		if (param.openParams!=null) {
+			for (Entry<String, String> entry : param.openParams.entrySet()) {
+				intent.putExtra(entry.getKey(), entry.getValue());
+			}
 		}
 		
 		intent.setClass(context, options.clazz);
@@ -357,7 +366,15 @@ public class Router {
 		}
 
 		if (openOptions == null || openParams == null) {
-			throw new RouterException("No route found for url " + url);
+
+			if (errorActivityClass!=null){
+				openParams = new RouterParameter();
+				openParams.routerOptions = new RouterParameter.RouterOptions();
+				openParams.routerOptions.clazz = errorActivityClass;
+				return openParams;
+			} else {
+				throw new RouterException("No route found for url " + url);
+			}
 		}
 
 		this.cachedRoutes.put(url, openParams);

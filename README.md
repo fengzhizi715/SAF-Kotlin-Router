@@ -34,7 +34,7 @@ apply plugin: 'com.neenbedankt.android-apt'
 ...
 
 dependencies {
-    compile 'com.safframework.router:saf-router:1.1.1'
+    compile 'com.safframework.router:saf-router:1.1.2'
     apt 'com.safframework.router:saf-router-compiler:1.1.0'
     ...
 }
@@ -176,7 +176,7 @@ apply plugin: 'kotlin-kapt'
 ...
 
 dependencies {
-    compile 'com.safframework.router:saf-router:1.1.1'
+    compile 'com.safframework.router:saf-router:1.1.2'
     kapt 'com.safframework.router:saf-router-compiler:1.1.0'
     ...
 }

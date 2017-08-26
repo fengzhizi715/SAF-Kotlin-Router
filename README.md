@@ -197,8 +197,7 @@ openFragment|跳转到某个Fragment
 TODO
 ===
 1. 更优雅的API
-2. 增加降级策略
-3. 使用http/https地址时,可以直接跳转至使用浏览器
+2. 使用http/https地址时,可以直接跳转至使用浏览器
 
 License
 -------

@@ -246,7 +246,9 @@ public class Router {
 		context.startActivityForResult(intent,requestCode);
 
 		if (options.enterAnim>0 && options.exitAnim>0) {
-			context.overridePendingTransition(options.enterAnim, options.exitAnim);
+			if (context instanceof Activity) {
+				((Activity)context).overridePendingTransition(options.enterAnim, options.exitAnim);
+			}
 		}
 	}
 

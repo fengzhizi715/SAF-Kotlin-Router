@@ -196,6 +196,7 @@ openURI|调用系统服务打开网页、打电话、调用地图app
 open|跳转到某个activity并传值
 openForResult|跳转到某个activity并传值，使用startActivityForResult进行跳转
 openFragment|跳转到某个Fragment
+setErrorActivity|设置自定义的全局的Error Activity，如果路由服务找不到相应的Activity，则跳转到该Error Activity
 
 
 TODO

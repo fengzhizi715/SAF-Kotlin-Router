@@ -65,6 +65,7 @@ public class Router {
 
 	/**
 	 * 设置全局错误的Activity，如果路由服务找不到对应的Activity则跳转到errorActivity，防止app引起crash，它是一种降级策略。
+	 * 全局错误的Activity需要开发者自己创建。
 	 * @param errorActivityClass
 	 */
 	public void setErrorActivity(Class errorActivityClass) {
@@ -210,7 +211,7 @@ public class Router {
 		context.startActivity(intent);
 		
 		if (options.enterAnim>0 && options.exitAnim>0) {
-			if (context instanceof Activity) {
+			if (context instanceof Activity) { // 如果需要使用动画,context需要开发者传入
 				((Activity)context).overridePendingTransition(options.enterAnim, options.exitAnim);
 			}
 		}

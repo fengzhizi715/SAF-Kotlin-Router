@@ -34,7 +34,7 @@ apply plugin: 'com.neenbedankt.android-apt'
 ...
 
 dependencies {
-    compile 'com.safframework.router:saf-router:1.1.2'
+    compile 'com.safframework.router:saf-router:1.1.3'
     apt 'com.safframework.router:saf-router-compiler:1.1.0'
     ...
 }

@@ -153,7 +153,7 @@ public class Router {
 	 * @param url
 	 */
 	public void open(String url) {
-		this.open(url,null);
+		this.open(url,getGlobalCallback(context));
 	}
 	
 	/**
@@ -180,7 +180,7 @@ public class Router {
 	}
 	
 	public void open(String url,Context context,Bundle extras) {
-		open(url,context,extras,Intent.FLAG_ACTIVITY_NEW_TASK,null);    // 默认的跳转类型,将Activity放到一个新的Task中
+		open(url,context,extras,Intent.FLAG_ACTIVITY_NEW_TASK,getGlobalCallback(context));    // 默认的跳转类型,将Activity放到一个新的Task中
 	}
 	
 	public void open(String url,Context context,Bundle extras,RouterCallback callback) {
@@ -226,7 +226,7 @@ public class Router {
 	 * @param requestCode
 	 */
 	public void openForResult(String url,Activity context,int requestCode) {
-		this.openForResult(url,context,requestCode,null);
+		this.openForResult(url,context,requestCode,getGlobalCallback(context));
 	}
 
 	public void openForResult(String url,Activity context,int requestCode,RouterCallback callback) {
@@ -412,7 +412,7 @@ public class Router {
 		cachedRoutes.evictAll();
 	}
 
-	private static RouterCallback getGlobalCallback(Context context) {
+	private RouterCallback getGlobalCallback(Context context) {
 
 		return context.getApplicationContext() instanceof RouterCallbackProvider ? ((RouterCallbackProvider) context.getApplicationContext()).provideRouterCallback() : null;
 	}

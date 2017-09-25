@@ -169,30 +169,30 @@ public class Router {
 	 * </code>
 	 * </pre>
 	 * @param url
-	 * @param checker
+	 * @param callback
 	 */
-	public void open(String url,RouterChecker checker) {
-		this.open(url,this.context,checker);
+	public void open(String url,RouterCallback callback) {
+		this.open(url,this.context,callback);
 	}
 	
-	public void open(String url,Context context,RouterChecker checker) {
-		this.open(url, context, null,checker);
+	public void open(String url,Context context,RouterCallback callback) {
+		this.open(url, context, null,callback);
 	}
 	
 	public void open(String url,Context context,Bundle extras) {
 		open(url,context,extras,Intent.FLAG_ACTIVITY_NEW_TASK,null);    // 默认的跳转类型,将Activity放到一个新的Task中
 	}
 	
-	public void open(String url,Context context,Bundle extras,RouterChecker checker) {
-		open(url,context,extras,Intent.FLAG_ACTIVITY_NEW_TASK,checker); // 默认的跳转类型,将Activity放到一个新的Task中
+	public void open(String url,Context context,Bundle extras,RouterCallback callback) {
+		open(url,context,extras,Intent.FLAG_ACTIVITY_NEW_TASK,callback); // 默认的跳转类型,将Activity放到一个新的Task中
 	}
 	
-	public void open(String url,Context context,Bundle extras,int flags,RouterChecker checker) {
+	public void open(String url,Context context,Bundle extras,int flags,RouterCallback callback) {
 		if (context == null) {
 			throw new RouterException("You need to supply a context for Router "+ this.toString());
 		}
 		
-		if (checker!=null && !checker.doCheck()) {
+		if (callback!=null && !callback.beforeOpen(context,url)) {
 			return;
 		}
 		
@@ -229,16 +229,16 @@ public class Router {
 		this.openForResult(url,context,requestCode,null);
 	}
 
-	public void openForResult(String url,Activity context,int requestCode,RouterChecker checker) {
-		this.openForResult(url,context,requestCode,null,checker);
+	public void openForResult(String url,Activity context,int requestCode,RouterCallback callback) {
+		this.openForResult(url,context,requestCode,null,callback);
 	}
 
-	public void openForResult(String url,Activity context,int requestCode,Bundle extras,RouterChecker checker) {
+	public void openForResult(String url,Activity context,int requestCode,Bundle extras,RouterCallback callback) {
 		if (context == null) {
 			throw new RouterException("You need to supply a context for Router "+ this.toString());
 		}
 
-		if (checker!=null && !checker.doCheck()) {
+		if (callback!=null && !callback.beforeOpen(context,url)) {
 			return;
 		}
 
@@ -264,7 +264,7 @@ public class Router {
 
 	/******************************** openFragment 相关操作 ********************************／
 
-	 /* *
+	 /**
 	 *
 	 * @param fragmentOptions
 	 * @param containerViewId
@@ -411,17 +411,9 @@ public class Router {
 	public void clear() {
 		cachedRoutes.evictAll();
 	}
-	
-	/**
-	 * 
-	 * @author Tony Shen
-	 *
-	 */
-	public interface RouterChecker {
 
-		/**
-		 * router跳转前的先判断是否满足跳转的条件,false表示不跳转，true表示进行跳转到下一个activity
-		 */
-		boolean doCheck(); 
+	private static RouterCallback getGlobalCallback(Context context) {
+
+		return context.getApplicationContext() instanceof RouterCallbackProvider ? ((RouterCallbackProvider) context.getApplicationContext()).provideRouterCallback() : null;
 	}
 }

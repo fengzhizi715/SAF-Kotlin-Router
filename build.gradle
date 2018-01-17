@@ -39,5 +39,5 @@ task clean(type: Delete) {
 
 tasks.getByPath(":saf-router:bintrayUpload").enabled = true
 tasks.getByPath(":saf-router:releaseAndroidJavadocs").enabled = false
-tasks.getByPath(":saf-router-compiler:bintrayUpload").enabled = false
-tasks.getByPath(":saf-router-annotation:bintrayUpload").enabled = false
+tasks.getByPath(":saf-router-compiler:bintrayUpload").enabled = true
+tasks.getByPath(":saf-router-annotation:bintrayUpload").enabled = true

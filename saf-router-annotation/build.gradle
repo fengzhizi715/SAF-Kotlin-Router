@@ -31,7 +31,7 @@ publish{
     userOrg = 'fengzhizi715'
     groupId = 'com.safframework.router'
     artifactId = 'saf-router-annotation'
-    publishVersion = '1.1.0'
+    publishVersion = '1.1.1'
     desc = 'The annotation used in saf router library'
     website = 'https://github.com/fengzhizi715/SAF-Kotlin-Router'
 }

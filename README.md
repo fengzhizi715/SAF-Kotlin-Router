@@ -13,29 +13,13 @@
 
 # 下载安装
 
-在根目录下的build.gradle中添加
-
-```groovy
- buildscript {
-     repositories {
-         jcenter()
-     }
-     dependencies {
-         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
-     }
- }
-```
-
 在app 模块目录下的build.gradle中添加
 
 ```groovy
-apply plugin: 'com.neenbedankt.android-apt'
-
-...
-
 dependencies {
-    compile 'com.safframework.router:saf-router:1.1.3'
-    apt 'com.safframework.router:saf-router-compiler:1.1.0'
+    implementation 'com.safframework.router:saf-router:1.1.4'
+    implementation 'com.safframework.router:saf-router-annotation:1.1.1'
+    annotationProcessor 'com.safframework.router:saf-router-compiler:1.1.1'
     ...
 }
 ```

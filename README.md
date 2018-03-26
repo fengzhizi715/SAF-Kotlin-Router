@@ -151,6 +151,38 @@ Router.getInstance().openURI("geo:0,0?q=31,121");
 * 每个 module(包含主项目) 都要添加一个 @Module(name) 的注解在任意类上面，name 是项目的名称
 * 主项目要添加一个 @Modules({name0, name1, name2}) 的注解，指定所有的 module 名称集合
 
+使用模块化架构，saf-router-compiler会编译时生成了一个RouterManager类，它大概是这样的：
+
+```java
+package com.safframework.router;
+
+import android.content.Context;
+
+public final class RouterManager {
+  public static void init(Context context) {
+    Router.getInstance().setContext(context);
+    RouterMapping_模块1.map();
+    RouterMapping_模块2.map();
+    ...
+  }
+}
+```
+
+除了生成RouterManager类之外，每一个模块还会生成一个`RouterMapping_模块名`的类。该类包含了这个模块的路由表。
+
+```java
+package com.safframework.router;
+
+public final class RouterMapping_main {
+  public static void map() {
+    RouterOptions options = null;
+    Router.getInstance().map("main/main", MainActivity.class);
+    Router.getInstance().map("main/guide", GuideActivity.class);
+    ...
+  }
+}
+```
+
 ## 5. 支持Kotlin项目
 对于Kotlin的项目或者Activity使用Kotlin来编写的，需要在module目录下的build.gradle中添加
 

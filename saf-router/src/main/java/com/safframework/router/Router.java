@@ -157,17 +157,7 @@ public class Router {
 	}
 	
 	/**
-	 * 跳转到某个activity并传值,router跳转前的先判断是否满足跳转的条件,doCheck()返回false表示不跳转，true表示进行跳转到下一个activity
-	 * <pre>
-	 * <code>
-	 * Router.getInstance().open("user/fengzhizi715/password/715",new RouterChecker(){
-     *
-	 *	 public boolean doCheck() {
-	 *		 return false;
-	 *	 }
-	 * });
-	 * </code>
-	 * </pre>
+	 * 跳转到某个activity并传值,router跳转前的先判断是否满足跳转的条件
 	 * @param url
 	 * @param callback
 	 */
@@ -412,6 +402,12 @@ public class Router {
 		cachedRoutes.evictAll();
 	}
 
+
+	/**
+	 * 返回全局的Callback
+	 * @param context
+	 * @return
+	 */
 	private RouterCallback getGlobalCallback(Context context) {
 
 		return context.getApplicationContext() instanceof RouterCallbackProvider ? ((RouterCallbackProvider) context.getApplicationContext()).provideRouterCallback() : null;

@@ -107,17 +107,6 @@ RouterManager.init(this);// 这一步是必须的，用于初始化Router
 Router.getInstance().open("user/fengzhizi715/password/715");
 ```
 
-如果在跳转前需要先做判断，看看是否满足跳转的条件,doCheck()返回false表示不跳转，true表示进行跳转到下一个activity
-
-```Java
-Router.getInstance().open("user/fengzhizi715/password/715",new RouterChecker(){
-
-     public boolean doCheck() {
-           return true;
-      }
- );
-```
-
 ## 2. Fragment跳转
 Fragment之间的跳转无须在Application中定义跳转的映射。可以直接在某个Fragment写下如下的代码
 

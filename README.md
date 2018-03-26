@@ -151,7 +151,7 @@ Router.getInstance().openURI("geo:0,0?q=31,121");
 * 每个 module(包含主项目) 都要添加一个 @Module(name) 的注解在任意类上面，name 是项目的名称
 * 主项目要添加一个 @Modules({name0, name1, name2}) 的注解，指定所有的 module 名称集合
 
-使用模块化架构，saf-router-compiler会编译时生成了一个RouterManager类，它大概是这样的：
+使用模块化架构时，在app模块中saf-router-compiler会编译时生成了一个RouterManager类，它大概是这样的：
 
 ```java
 package com.safframework.router;

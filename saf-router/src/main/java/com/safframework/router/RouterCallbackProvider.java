@@ -7,5 +7,5 @@ package com.safframework.router;
 
 public interface RouterCallbackProvider {
 
-    RouterCallback provideRouterCallback();
+    RouteInterceptor provideRouterCallback();
 }

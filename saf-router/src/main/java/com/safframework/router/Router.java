@@ -148,7 +148,7 @@ public class Router {
 	/******************************** open 相关操作 start ********************************／
 
 	/**
-	 * 跳转到某个activity并传值，使用默认的全局Callback
+	 * 跳转到某个activity并传值，使用默认的全局的拦截器
 	 * <pre>
 	 * <code>
 	 * Router.getInstance().open("user/fengzhizi715/password/715");
@@ -157,34 +157,34 @@ public class Router {
 	 * @param url
 	 */
 	public void open(String url) {
-		this.open(url,getGlobalCallback(context));
+		this.open(url, getGlobalRouteInterceptor(context));
 	}
 	
 	/**
 	 * 跳转到某个activity并传值,router跳转前的先判断是否满足跳转的条件
-	 * 支持自定义的Callback
+	 * 支持自定义的拦截器
 	 * @param url
-	 * @param callback
+	 * @param interceptor
 	 */
-	public void open(String url,RouterCallback callback) {
-		this.open(url,this.context,callback);
+	public void open(String url,RouteInterceptor interceptor) {
+		this.open(url,this.context,interceptor);
 	}
 	
-	public void open(String url,Context context,RouterCallback callback) {
-		this.open(url, context, null,callback);
+	public void open(String url,Context context,RouteInterceptor interceptor) {
+		this.open(url, context, null,interceptor);
 	}
 	
-	public void open(String url,Context context,Bundle extras,RouterCallback callback) {
-		open(url,context,extras,Intent.FLAG_ACTIVITY_NEW_TASK,callback); // 默认的跳转类型,将Activity放到一个新的Task中
+	public void open(String url,Context context,Bundle extras,RouteInterceptor interceptor) {
+		open(url,context,extras,Intent.FLAG_ACTIVITY_NEW_TASK,interceptor); // 默认的跳转类型,将Activity放到一个新的Task中
 	}
 	
-	public void open(String url,Context context,Bundle extras,int flags,RouterCallback callback) {
+	public void open(String url,Context context,Bundle extras,int flags,RouteInterceptor interceptor) {
 
 		if (context == null) {
 			throw new RouterException("You need to supply a context for Router "+ this.toString());
 		}
 		
-		if (callback!=null && !callback.beforeOpen(context,url)) {
+		if (interceptor!=null && !interceptor.beforeOpen(context,url)) {
 			return;
 		}
 		
@@ -220,19 +220,19 @@ public class Router {
 	 * @param requestCode
 	 */
 	public void openForResult(String url,Activity context,int requestCode) {
-		this.openForResult(url,context,requestCode,getGlobalCallback(context));
+		this.openForResult(url,context,requestCode, getGlobalRouteInterceptor(context));
 	}
 
-	public void openForResult(String url,Activity context,int requestCode,RouterCallback callback) {
-		this.openForResult(url,context,requestCode,null,callback);
+	public void openForResult(String url,Activity context,int requestCode,RouteInterceptor interceptor) {
+		this.openForResult(url,context,requestCode,null,interceptor);
 	}
 
-	public void openForResult(String url,Activity context,int requestCode,Bundle extras,RouterCallback callback) {
+	public void openForResult(String url,Activity context,int requestCode,Bundle extras,RouteInterceptor interceptor) {
 		if (context == null) {
 			throw new RouterException("You need to supply a context for Router "+ this.toString());
 		}
 
-		if (callback!=null && !callback.beforeOpen(context,url)) {
+		if (interceptor!=null && !interceptor.beforeOpen(context,url)) {
 			return;
 		}
 
@@ -417,12 +417,13 @@ public class Router {
 
 
 	/**
-	 * 返回全局的Callback
-	 * 全局的CallBack需要在Application中impelments
+	 * 返回全局的拦截器
+	 * 全局的拦截器需要Application去implements
+	 *
 	 * @param context
 	 * @return
 	 */
-	private RouterCallback getGlobalCallback(Context context) {
+	private RouteInterceptor getGlobalRouteInterceptor(Context context) {
 
 		return context.getApplicationContext() instanceof RouterCallbackProvider ? ((RouterCallbackProvider) context.getApplicationContext()).provideRouterCallback() : null;
 	}

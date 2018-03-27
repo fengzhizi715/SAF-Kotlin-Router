@@ -425,6 +425,6 @@ public class Router {
 	 */
 	private RouteInterceptor getGlobalRouteInterceptor(Context context) {
 
-		return context.getApplicationContext() instanceof RouterCallbackProvider ? ((RouterCallbackProvider) context.getApplicationContext()).provideRouterCallback() : null;
+		return context.getApplicationContext() instanceof RouteInterceptorProvider ? ((RouteInterceptorProvider) context.getApplicationContext()).provideRouteInterceptor() : null;
 	}
 }

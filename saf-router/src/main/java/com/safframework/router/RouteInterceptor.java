@@ -9,5 +9,11 @@ import android.content.Context;
 
 public interface RouteInterceptor {
 
+    /**
+     * 跳转之前的拦截
+     * @param context
+     * @param url
+     * @return
+     */
     boolean beforeOpen(Context context, String url);
 }

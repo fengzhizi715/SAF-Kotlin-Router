@@ -72,7 +72,7 @@ public class Router {
 		this.errorActivityClass = errorActivityClass;
 	}
 
-	/******************************** map 相关操作 ********************************／
+	/******************************** map 相关操作 start ********************************／
 	
 	/**
 	 * @param format 形如"user/:user/password/:password"这样的格式，其中user、password为参数名
@@ -90,7 +90,9 @@ public class Router {
 		this.routes.put(format, options);
 	}
 
-	/******************************** openURI 相关操作 ********************************／
+	/******************************** map 相关操作 end ********************************／
+
+	/******************************** openURI 相关操作 start ********************************／
 
 	/**
 	 * 跳转到网页，如下：
@@ -140,8 +142,10 @@ public class Router {
 		
 		context.startActivity(intent);
 	}
+	/******************************** openURI 相关操作 end ********************************／
 
-	/******************************** open 相关操作 ********************************／
+
+	/******************************** open 相关操作 start ********************************／
 
 	/**
 	 * 跳转到某个activity并传值
@@ -207,7 +211,9 @@ public class Router {
 		}
 	}
 
-	/******************************** openForResult 相关操作 ********************************／
+	/******************************** open 相关操作 end ********************************／
+
+	/******************************** openForResult 相关操作 start ********************************／
 
 	/**
 	 *
@@ -252,7 +258,9 @@ public class Router {
 		}
 	}
 
-	/******************************** openFragment 相关操作 ********************************／
+	/******************************** openForResult 相关操作 end ********************************／
+
+	/******************************** openFragment 相关操作 start ********************************／
 
 	 /**
 	 *
@@ -283,7 +291,15 @@ public class Router {
 		
 		fragmentOptions.fragmentManager.beginTransaction().replace(containerViewId , fragment).addToBackStack(null).commit();
 	}
-	
+
+	/******************************** openFragment 相关操作 end********************************／
+
+	 /**
+	 *
+	 * @param url
+	 * @param fragmentOptions
+	 * @return
+	 */
 	private Fragment parseFragmentUrl(String url, FragmentOptions fragmentOptions) {
 		String[] givenParts = url.split("/");
 		int length = givenParts.length;
@@ -405,6 +421,7 @@ public class Router {
 
 	/**
 	 * 返回全局的Callback
+	 * 全局的CallBack需要在Application中impelments
 	 * @param context
 	 * @return
 	 */

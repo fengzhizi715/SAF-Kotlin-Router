@@ -17,7 +17,7 @@
 
 ```groovy
 dependencies {
-    implementation 'com.safframework.router:saf-router:1.1.4'
+    implementation 'com.safframework.router:saf-router:1.1.5'
     implementation 'com.safframework.router:saf-router-annotation:1.1.1'
     annotationProcessor 'com.safframework.router:saf-router-compiler:1.1.1'
     ...
@@ -182,7 +182,7 @@ apply plugin: 'kotlin-kapt'
 ...
 
 dependencies {
-    implementation 'com.safframework.router:saf-router:1.1.4'
+    implementation 'com.safframework.router:saf-router:1.1.5'
     implementation 'com.safframework.router:saf-router-annotation:1.1.1'
     kapt 'com.safframework.router:saf-router-compiler:1.1.1'
     ...

@@ -142,6 +142,33 @@ public class Router {
 		
 		context.startActivity(intent);
 	}
+
+	public void openURI(Uri uri) {
+		this.openURI(uri,this.context);
+	}
+
+	public void openURI(Uri uri,Context context) {
+		this.openURI(uri, context, null);
+	}
+
+	public void openURI(Uri uri,Context context,Bundle extras) {
+		openURI(uri,context,extras,Intent.FLAG_ACTIVITY_NEW_TASK);
+	}
+
+	public void openURI(Uri uri,Context context,Bundle extras, int flags) {
+		if (context == null) {
+			throw new RouterException("You need to supply a context for Router " + this.toString());
+		}
+
+		Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+		this.addFlagsToIntent(intent, context, flags);
+		if (extras != null) {
+			intent.putExtras(extras);
+		}
+
+		context.startActivity(intent);
+	}
+
 	/******************************** openURI 相关操作 end ********************************／
 
 

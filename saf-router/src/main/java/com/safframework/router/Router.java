@@ -148,7 +148,7 @@ public class Router {
 	/******************************** open 相关操作 start ********************************／
 
 	/**
-	 * 跳转到某个activity并传值
+	 * 跳转到某个activity并传值，使用默认的全局Callback
 	 * <pre>
 	 * <code>
 	 * Router.getInstance().open("user/fengzhizi715/password/715");
@@ -162,6 +162,7 @@ public class Router {
 	
 	/**
 	 * 跳转到某个activity并传值,router跳转前的先判断是否满足跳转的条件
+	 * 支持自定义的Callback
 	 * @param url
 	 * @param callback
 	 */
@@ -173,15 +174,12 @@ public class Router {
 		this.open(url, context, null,callback);
 	}
 	
-	public void open(String url,Context context,Bundle extras) {
-		open(url,context,extras,Intent.FLAG_ACTIVITY_NEW_TASK,getGlobalCallback(context));    // 默认的跳转类型,将Activity放到一个新的Task中
-	}
-	
 	public void open(String url,Context context,Bundle extras,RouterCallback callback) {
 		open(url,context,extras,Intent.FLAG_ACTIVITY_NEW_TASK,callback); // 默认的跳转类型,将Activity放到一个新的Task中
 	}
 	
 	public void open(String url,Context context,Bundle extras,int flags,RouterCallback callback) {
+
 		if (context == null) {
 			throw new RouterException("You need to supply a context for Router "+ this.toString());
 		}

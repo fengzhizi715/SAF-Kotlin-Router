@@ -15,5 +15,5 @@ public interface RouteInterceptor {
      * @param url
      * @return
      */
-    boolean beforeOpen(Context context, String url);
+    boolean intercept(Context context, String url);
 }

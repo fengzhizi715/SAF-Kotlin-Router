@@ -184,7 +184,7 @@ public class Router {
 			throw new RouterException("You need to supply a context for Router "+ this.toString());
 		}
 		
-		if (interceptor!=null && !interceptor.beforeOpen(context,url)) {
+		if (interceptor!=null && !interceptor.intercept(context,url)) {
 			return;
 		}
 		
@@ -232,7 +232,7 @@ public class Router {
 			throw new RouterException("You need to supply a context for Router "+ this.toString());
 		}
 
-		if (interceptor!=null && !interceptor.beforeOpen(context,url)) {
+		if (interceptor!=null && !interceptor.intercept(context,url)) {
 			return;
 		}
 
@@ -418,7 +418,7 @@ public class Router {
 
 	/**
 	 * 返回全局的拦截器
-	 * 全局的拦截器需要Application去implements
+	 * 全局的拦截器需要Application去实现RouteInterceptorProvider接口
 	 *
 	 * @param context
 	 * @return

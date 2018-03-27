@@ -286,13 +286,12 @@ public class Router {
 				&& fragmentOptions.fragmentManager != null))
 			return;
 		
-		Fragment fragment = fragmentOptions.mFragmentInstnace;
-		fragment = parseFragmentUrl(url,fragmentOptions);
+		Fragment fragment = parseFragmentUrl(url,fragmentOptions);
 		
 		fragmentOptions.fragmentManager.beginTransaction().replace(containerViewId , fragment).addToBackStack(null).commit();
 	}
 
-	/******************************** openFragment 相关操作 end********************************／
+	/******************************** openFragment 相关操作 end ********************************／
 
 	 /**
 	 *

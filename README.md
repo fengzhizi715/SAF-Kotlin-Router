@@ -31,6 +31,7 @@ dependencies {
 
 * 支持模块化的架构。
 
+
 # 使用方法
 
 ## 1. Activity跳转
@@ -157,7 +158,7 @@ public final class RouterManager {
 }
 ```
 
-除了生成RouterManager类之外，每一个模块还会生成一个`RouterMapping_模块名`的类。该类包含了这个模块的路由表。
+除了生成一个唯一的RouterManager类之外，每一个模块还会生成一个`RouterMapping_模块名`的类。该类包含了这个模块的路由表。
 
 ```java
 package com.safframework.router;
@@ -205,7 +206,7 @@ openFragment|跳转到某个Fragment
 setErrorActivity|设置自定义的全局的Error Activity，如果路由服务找不到相应的Activity，则跳转到该Error Activity
 
 
-TODO
+TODO:
 ===
 1. 更优雅的API
 2. 使用http/https地址时,可以直接跳转至使用浏览器

@@ -11,7 +11,9 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.util.LruCache;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -42,8 +44,9 @@ public class Router {
 	public static final int DEFAULT_CACHE_SIZE = 1024;
 	
 	private Context context;
-	private LruCache<String, RouterParameter> cachedRoutes = new LruCache<String, RouterParameter>(DEFAULT_CACHE_SIZE); // 缓存跳转的参数
-	private final Map<String, RouterParameter.RouterOptions> routes = new HashMap<String, RouterParameter.RouterOptions>();           // 存放Intent之间跳转的route
+//	private LruCache<String, RouterParameter> cachedRoutes = new LruCache<String, RouterParameter>(DEFAULT_CACHE_SIZE); // 缓存跳转的参数
+
+	private final Map<String, Mapping> routes = new HashMap<String, Mapping>();
 	private Class errorActivityClass;
 	
 	private static final Router router = new Router();
@@ -73,7 +76,26 @@ public class Router {
 	}
 
 	/******************************** map 相关操作 start ********************************／
-	
+
+     /**
+     *
+     * @param format
+     */
+    public void map(String format) {
+
+        routes.put(format,new Mapping(format, null,null, null));
+    }
+
+	/**
+	 *
+	 * @param format
+	 * @param method
+	 */
+	public void map(String format,MethodInvoker method) {
+
+		routes.put(format,new Mapping(format, null,null, method));
+	}
+
 	/**
 	 * @param format 形如"user/:user/password/:password"这样的格式，其中user、password为参数名
 	 * @param clazz
@@ -87,7 +109,7 @@ public class Router {
 			options = new RouterParameter.RouterOptions();
 		}
 		options.clazz = clazz;
-		this.routes.put(format, options);
+		routes.put(format,new Mapping(format,clazz,options));
 	}
 
 	/******************************** map 相关操作 end ********************************／
@@ -216,7 +238,7 @@ public class Router {
 		if (interceptor!=null && !interceptor.intercept(context,url)) {
 			return;
 		}
-		
+
 		RouterParameter param = parseUrl(url);
 		RouterParameter.RouterOptions options = param.routerOptions;
 		
@@ -238,7 +260,7 @@ public class Router {
 		}
 	}
 
-	/******************************** open 相关操作 end ********************************／
+    /******************************** open 相关操作 end ********************************／
 
 	/******************************** openForResult 相关操作 start ********************************／
 
@@ -318,7 +340,7 @@ public class Router {
 		fragmentOptions.fragmentManager.beginTransaction().replace(containerViewId , fragment).addToBackStack(null).commit();
 	}
 
-	/******************************** openFragment 相关操作 end ********************************／
+    /******************************** openFragment 相关操作 end ********************************／
 
 	 /**
 	 *
@@ -371,17 +393,18 @@ public class Router {
 	}
 
 	private RouterParameter parseUrl(String url) {
-		if (this.cachedRoutes.get(url) != null) {
-			return this.cachedRoutes.get(url);
-		}
+//		if (this.cachedRoutes.get(url) != null) {
+//			return this.cachedRoutes.get(url);
+//		}
 
 		String[] givenParts = url.split("/");
 
 		RouterParameter.RouterOptions openOptions = null;
 		RouterParameter openParams = null;
-		for (Entry<String, RouterParameter.RouterOptions> entry : this.routes.entrySet()) {
+		for (Entry<String, Mapping> entry : this.routes.entrySet()) {
 			String routerUrl = entry.getKey();
-			RouterParameter.RouterOptions routerOptions = entry.getValue();
+			Mapping mapping = entry.getValue();
+			RouterParameter.RouterOptions routerOptions = mapping.getOptions();
 			String[] routerParts = routerUrl.split("/");
 
 			if (routerParts.length != givenParts.length) {
@@ -397,6 +420,7 @@ public class Router {
 			openParams = new RouterParameter();
 			openParams.openParams = givenParams;
 			openParams.routerOptions = routerOptions;
+			openParams.matchType = mapping.getMatchType();
 			break;
 		}
 
@@ -412,7 +436,7 @@ public class Router {
 			}
 		}
 
-		this.cachedRoutes.put(url, openParams);
+//		this.cachedRoutes.put(url, openParams);
 		return openParams;
 	}
 
@@ -441,7 +465,7 @@ public class Router {
 	 * App退出时，建议清空缓存数据
 	 */
 	public void clear() {
-		cachedRoutes.evictAll();
+//		cachedRoutes.evictAll();
 	}
 
 

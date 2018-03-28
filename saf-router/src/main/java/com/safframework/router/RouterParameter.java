@@ -15,6 +15,7 @@ public class RouterParameter {
 
 	public RouterOptions routerOptions;
 	public Map<String, String> openParams;
+	public MatchType matchType;
 
 	public static class RouterOptions {
 		public Class<? extends Activity> clazz; // 跳转到的class

@@ -16,6 +16,11 @@ public class Mapping {
     private MethodInvoker method;
     private MatchType matchType;
 
+    public Mapping(String format,Class<? extends Activity> activity,RouterParameter.RouterOptions options) {
+
+        this(format,activity,options,null);
+    }
+
     public Mapping(String format,Class<? extends Activity> activity,RouterParameter.RouterOptions options,MethodInvoker method) {
 
         if (format == null) {
@@ -49,5 +54,9 @@ public class Mapping {
 
     public MethodInvoker getMethod() {
         return method;
+    }
+
+    public MatchType getMatchType() {
+        return matchType;
     }
 }

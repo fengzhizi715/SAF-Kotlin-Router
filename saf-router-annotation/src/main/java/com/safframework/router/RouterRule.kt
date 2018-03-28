@@ -6,7 +6,10 @@ import java.lang.annotation.RetentionPolicy
 /**
  * Created by Tony Shen on 2017/1/18.
  */
+@Target(AnnotationTarget.CLASS,AnnotationTarget.FUNCTION)
 @Retention(RetentionPolicy.CLASS)
 annotation class RouterRule(
         /** activity对应url  */
-        val url: Array<String>, val enterAnim: Int = 0, val exitAnim: Int = 0)
+        val url: Array<String>,
+        val enterAnim: Int = 0,
+        val exitAnim: Int = 0)

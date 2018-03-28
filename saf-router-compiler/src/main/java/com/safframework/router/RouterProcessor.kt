@@ -108,6 +108,7 @@ class RouterProcessor: AbstractProcessor() {
     }
 
     private fun  generateModuleRouterMap(moduleName: String, roundEnv: RoundEnvironment) {
+
         val routerRuleElements = roundEnv.getElementsAnnotatedWith(RouterRule::class.java)
 
         if (routerRuleElements.isEmpty()) return

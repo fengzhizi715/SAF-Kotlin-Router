@@ -95,6 +95,8 @@ public class Router {
 	/******************************** openURI 相关操作 start ********************************／
 
 	/**
+	 * 使用openURI的相关方法，无需调用map()存到路由表
+	 *
 	 * 跳转到网页，如下：
 	 * <pre>
 	 * <code>
@@ -436,7 +438,7 @@ public class Router {
 	}
 	
 	/**
-	 * 退出系统时，清空缓存数据
+	 * App退出时，建议清空缓存数据
 	 */
 	public void clear() {
 		cachedRoutes.evictAll();

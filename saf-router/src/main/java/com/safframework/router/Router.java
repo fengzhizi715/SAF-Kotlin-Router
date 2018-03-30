@@ -230,11 +230,24 @@ public class Router {
 			return;
 		}
 
-		if (url.contains("://")) {
+		try {
+            if (url.contains("://")) {
 
-			openURI(url);
-			return;
-		}
+                openURI(url);
+                return;
+            }
+        } catch (Exception e) {
+
+		    if (errorActivityClass!=null) {
+
+		        Intent i = new Intent();
+		        i.setClass(context, errorActivityClass);
+                context.startActivity(i);
+
+                return;
+            }
+        }
+
 
 		RouterParameter param = parseUrl(url);
 		RouterParameter.RouterOptions options = param.routerOptions;

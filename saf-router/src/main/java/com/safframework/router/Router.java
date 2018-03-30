@@ -230,6 +230,12 @@ public class Router {
 			return;
 		}
 
+		if (url.contains("://")) {
+
+			openURI(url);
+			return;
+		}
+
 		RouterParameter param = parseUrl(url);
 		RouterParameter.RouterOptions options = param.routerOptions;
 		

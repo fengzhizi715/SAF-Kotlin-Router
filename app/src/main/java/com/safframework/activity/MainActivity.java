@@ -74,6 +74,15 @@ public class MainActivity extends AppCompatActivity {
                 Router.getInstance().open("module2/main");
             }
         });
+
+        Button button7 = (Button) findViewById(R.id.button7);
+        button7.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Router.getInstance().open("https://www.baidu.com/");
+            }
+        });
     }
 
     @Override

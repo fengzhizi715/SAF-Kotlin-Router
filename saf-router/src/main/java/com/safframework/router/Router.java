@@ -77,15 +77,6 @@ public class Router {
 
 	/******************************** map 相关操作 start ********************************／
 
-     /**
-     *
-     * @param format
-     */
-    public void map(String format) {
-
-        routes.put(format,new Mapping(format, null,null, null));
-    }
-
 	/**
 	 *
 	 * @param format

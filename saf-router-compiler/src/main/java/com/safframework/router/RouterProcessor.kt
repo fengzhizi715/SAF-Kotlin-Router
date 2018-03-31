@@ -7,7 +7,6 @@ import com.squareup.javapoet.TypeSpec
 import java.util.*
 import javax.annotation.processing.*
 import javax.lang.model.SourceVersion
-import javax.lang.model.element.Element
 import javax.lang.model.element.Modifier
 import javax.lang.model.element.TypeElement
 import javax.lang.model.util.Elements
@@ -178,6 +177,9 @@ class RouterProcessor: AbstractProcessor() {
         }
     }
 
+    /**
+     * 不使用模块化，通过apt生成的路由表
+     */
     @Throws(ClassNotFoundException::class)
     private fun generateDefaultRouterInit(roundEnv: RoundEnvironment) {
 

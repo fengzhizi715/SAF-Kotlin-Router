@@ -44,8 +44,7 @@ public class Router {
 	public static final int DEFAULT_CACHE_SIZE = 1024;
 	
 	private Context context;
-//	private LruCache<String, RouterParameter> cachedRoutes = new LruCache<String, RouterParameter>(DEFAULT_CACHE_SIZE); // 缓存跳转的参数
-
+	private LruCache<String, RouterParameter> cachedRoutes = new LruCache<String, RouterParameter>(DEFAULT_CACHE_SIZE); // 缓存跳转的参数
 	private final Map<String, Mapping> routes = new HashMap<String, Mapping>();
 	private Class errorActivityClass;
 	
@@ -410,9 +409,9 @@ public class Router {
 	}
 
 	private RouterParameter parseUrl(String url) {
-//		if (this.cachedRoutes.get(url) != null) {
-//			return this.cachedRoutes.get(url);
-//		}
+		if (this.cachedRoutes.get(url) != null) {
+			return this.cachedRoutes.get(url);
+		}
 
 		String[] givenParts = url.split("/");
 
@@ -429,6 +428,7 @@ public class Router {
 			openParams.matchType = mapping.getMatchType();
 			openParams.method = mapping.getMethod();
 
+			this.cachedRoutes.put(url, openParams);
 			return openParams;
 		} else {
 
@@ -470,7 +470,7 @@ public class Router {
 			}
 		}
 
-//		this.cachedRoutes.put(url, openParams);
+		this.cachedRoutes.put(url, openParams);
 		return openParams;
 	}
 
@@ -499,7 +499,7 @@ public class Router {
 	 * App退出时，建议清空缓存数据
 	 */
 	public void clear() {
-//		cachedRoutes.evictAll();
+		cachedRoutes.evictAll();
 	}
 
 

@@ -7,6 +7,7 @@ import com.squareup.javapoet.TypeSpec
 import java.util.*
 import javax.annotation.processing.*
 import javax.lang.model.SourceVersion
+import javax.lang.model.element.Element
 import javax.lang.model.element.Modifier
 import javax.lang.model.element.TypeElement
 import javax.lang.model.util.Elements
@@ -115,38 +116,39 @@ class RouterProcessor: AbstractProcessor() {
         val routerMapBuilder = MethodSpec.methodBuilder("map")
                 .addModifiers(Modifier.PUBLIC, Modifier.STATIC)
 
-        if (routerRuleElements.isNotEmpty()) {
+        if (routerRuleElements!!.isNotEmpty()) {
 
             routerMapBuilder.addStatement("\$T options = null", TypeUtils.ROUTER_OPTIONS)
 
-            routerRuleElements.map {
-                it as TypeElement
-            }.filter(fun(it: TypeElement): Boolean {
-                return isValidClass(mMessager, it, "@RouterRule")
-            }).forEach {
-                val routerRule = it.getAnnotation(RouterRule::class.java)
-                val routerUrls = routerRule.url
-                val enterAnim = routerRule.enterAnim
-                val exitAnim = routerRule.exitAnim
-                if (routerUrls != null) {
-                    for (routerUrl in routerUrls) {
+            routerRuleElements
+                    .map {
+                        it as TypeElement
+                    }.filter(fun(it: TypeElement): Boolean {
+                        return isValidClass(mMessager, it, "@RouterRule")
+                    }).forEach {
+                        val routerRule = it.getAnnotation(RouterRule::class.java)
+                        val routerUrls = routerRule.url
+                        val enterAnim = routerRule.enterAnim
+                        val exitAnim = routerRule.exitAnim
+                        if (routerUrls != null) {
+                            for (routerUrl in routerUrls) {
 
-                        if (enterAnim > 0 && exitAnim > 0) {
-                            routerMapBuilder.addStatement("options = new \$T()", TypeUtils.ROUTER_OPTIONS)
-                            routerMapBuilder.addStatement("options.enterAnim = " + enterAnim)
-                            routerMapBuilder.addStatement("options.exitAnim = " + exitAnim)
-                            routerMapBuilder.addStatement("\$T.getInstance().map(\$S, \$T.class,options)", TypeUtils.ROUTER, routerUrl, ClassName.get(it))
-                        } else {
-                            routerMapBuilder.addStatement("\$T.getInstance().map(\$S, \$T.class)", TypeUtils.ROUTER, routerUrl, ClassName.get(it))
+                                if (enterAnim > 0 && exitAnim > 0) {
+                                    routerMapBuilder.addStatement("options = new \$T()", TypeUtils.ROUTER_OPTIONS)
+                                    routerMapBuilder.addStatement("options.enterAnim = " + enterAnim)
+                                    routerMapBuilder.addStatement("options.exitAnim = " + exitAnim)
+                                    routerMapBuilder.addStatement("\$T.getInstance().map(\$S, \$T.class,options)", TypeUtils.ROUTER, routerUrl, ClassName.get(it))
+                                } else {
+                                    routerMapBuilder.addStatement("\$T.getInstance().map(\$S, \$T.class)", TypeUtils.ROUTER, routerUrl, ClassName.get(it))
+                                }
+                            }
                         }
                     }
-                }
-            }
         }
 
         val routerActionElements = roundEnv.getElementsAnnotatedWith(RouterAction::class.java)
 
-        if (routerActionElements.isNotEmpty()) {
+        if (routerActionElements!!.isNotEmpty()) {
 
             routerActionElements
                     .forEach {
@@ -190,28 +192,29 @@ class RouterProcessor: AbstractProcessor() {
         routerInitBuilder.addStatement("\$T.getInstance().setContext(context)", TypeUtils.ROUTER)
         routerInitBuilder.addStatement("\$T options = null", TypeUtils.ROUTER_OPTIONS)
 
-        routerRuleElements.map {
-            it as TypeElement
-        }.filter(fun(it: TypeElement): Boolean {
-            return isValidClass(mMessager, it, "@RouterRule")
-        }).forEach {
-            val routerRule = it.getAnnotation(RouterRule::class.java)
-            val routerUrls = routerRule.url
-            val enterAnim = routerRule.enterAnim
-            val exitAnim = routerRule.exitAnim
-            if (routerUrls != null) {
-                for (routerUrl in routerUrls) {
-                    if (enterAnim > 0 && exitAnim > 0) {
-                        routerInitBuilder.addStatement("options = new \$T()", TypeUtils.ROUTER_OPTIONS)
-                        routerInitBuilder.addStatement("options.enterAnim = " + enterAnim)
-                        routerInitBuilder.addStatement("options.exitAnim = " + exitAnim)
-                        routerInitBuilder.addStatement("\$T.getInstance().map(\$S, \$T.class,options)", TypeUtils.ROUTER, routerUrl, ClassName.get(it))
-                    } else {
-                        routerInitBuilder.addStatement("\$T.getInstance().map(\$S, \$T.class)", TypeUtils.ROUTER, routerUrl, ClassName.get(it))
+        routerRuleElements
+                .map {
+                    it as TypeElement
+                }.filter(fun(it: TypeElement): Boolean {
+                    return isValidClass(mMessager, it, "@RouterRule")
+                }).forEach {
+                    val routerRule = it.getAnnotation(RouterRule::class.java)
+                    val routerUrls = routerRule.url
+                    val enterAnim = routerRule.enterAnim
+                    val exitAnim = routerRule.exitAnim
+                    if (routerUrls != null) {
+                        for (routerUrl in routerUrls) {
+                            if (enterAnim > 0 && exitAnim > 0) {
+                                routerInitBuilder.addStatement("options = new \$T()", TypeUtils.ROUTER_OPTIONS)
+                                routerInitBuilder.addStatement("options.enterAnim = " + enterAnim)
+                                routerInitBuilder.addStatement("options.exitAnim = " + exitAnim)
+                                routerInitBuilder.addStatement("\$T.getInstance().map(\$S, \$T.class,options)", TypeUtils.ROUTER, routerUrl, ClassName.get(it))
+                            } else {
+                                routerInitBuilder.addStatement("\$T.getInstance().map(\$S, \$T.class)", TypeUtils.ROUTER, routerUrl, ClassName.get(it))
+                            }
+                        }
                     }
                 }
-            }
-        }
 
         val routerActionElements = roundEnv.getElementsAnnotatedWith(RouterAction::class.java)
 

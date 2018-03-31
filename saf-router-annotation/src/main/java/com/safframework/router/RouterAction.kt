@@ -4,6 +4,7 @@ import java.lang.annotation.Retention
 import java.lang.annotation.RetentionPolicy
 
 /**
+ * 路由的行为，跟RouterRule是有区别的。
  *
  * @FileName:
  *          com.safframework.router.RouterAction.java

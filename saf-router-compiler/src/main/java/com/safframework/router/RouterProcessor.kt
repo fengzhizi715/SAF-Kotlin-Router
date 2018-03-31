@@ -183,42 +183,44 @@ class RouterProcessor: AbstractProcessor() {
 
         val routerRuleElements = roundEnv.getElementsAnnotatedWith(RouterRule::class.java)
 
-        if (routerRuleElements.isEmpty()) return
-
         val routerInitBuilder = MethodSpec.methodBuilder("init")
                 .addModifiers(Modifier.PUBLIC, Modifier.STATIC)
                 .addParameter(TypeUtils.CONTEXT, "context")
 
         routerInitBuilder.addStatement("\$T.getInstance().setContext(context)", TypeUtils.ROUTER)
-        routerInitBuilder.addStatement("\$T options = null", TypeUtils.ROUTER_OPTIONS)
 
-        routerRuleElements
-                .map {
-                    it as TypeElement
-                }.filter(fun(it: TypeElement): Boolean {
-                    return isValidClass(mMessager, it, "@RouterRule")
-                }).forEach {
-                    val routerRule = it.getAnnotation(RouterRule::class.java)
-                    val routerUrls = routerRule.url
-                    val enterAnim = routerRule.enterAnim
-                    val exitAnim = routerRule.exitAnim
-                    if (routerUrls != null) {
-                        for (routerUrl in routerUrls) {
-                            if (enterAnim > 0 && exitAnim > 0) {
-                                routerInitBuilder.addStatement("options = new \$T()", TypeUtils.ROUTER_OPTIONS)
-                                routerInitBuilder.addStatement("options.enterAnim = " + enterAnim)
-                                routerInitBuilder.addStatement("options.exitAnim = " + exitAnim)
-                                routerInitBuilder.addStatement("\$T.getInstance().map(\$S, \$T.class,options)", TypeUtils.ROUTER, routerUrl, ClassName.get(it))
-                            } else {
-                                routerInitBuilder.addStatement("\$T.getInstance().map(\$S, \$T.class)", TypeUtils.ROUTER, routerUrl, ClassName.get(it))
+        if (routerRuleElements!!.isNotEmpty()) {
+
+            routerInitBuilder.addStatement("\$T options = null", TypeUtils.ROUTER_OPTIONS)
+
+            routerRuleElements
+                    .map {
+                        it as TypeElement
+                    }.filter(fun(it: TypeElement): Boolean {
+                        return isValidClass(mMessager, it, "@RouterRule")
+                    }).forEach {
+                        val routerRule = it.getAnnotation(RouterRule::class.java)
+                        val routerUrls = routerRule.url
+                        val enterAnim = routerRule.enterAnim
+                        val exitAnim = routerRule.exitAnim
+                        if (routerUrls != null) {
+                            for (routerUrl in routerUrls) {
+                                if (enterAnim > 0 && exitAnim > 0) {
+                                    routerInitBuilder.addStatement("options = new \$T()", TypeUtils.ROUTER_OPTIONS)
+                                    routerInitBuilder.addStatement("options.enterAnim = " + enterAnim)
+                                    routerInitBuilder.addStatement("options.exitAnim = " + exitAnim)
+                                    routerInitBuilder.addStatement("\$T.getInstance().map(\$S, \$T.class,options)", TypeUtils.ROUTER, routerUrl, ClassName.get(it))
+                                } else {
+                                    routerInitBuilder.addStatement("\$T.getInstance().map(\$S, \$T.class)", TypeUtils.ROUTER, routerUrl, ClassName.get(it))
+                                }
                             }
                         }
                     }
-                }
+        }
 
         val routerActionElements = roundEnv.getElementsAnnotatedWith(RouterAction::class.java)
 
-        if (routerActionElements.isNotEmpty()) {
+        if (routerActionElements!!.isNotEmpty()) {
 
             routerActionElements
                     .forEach {

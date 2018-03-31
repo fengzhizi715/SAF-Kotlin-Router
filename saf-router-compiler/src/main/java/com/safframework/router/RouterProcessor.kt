@@ -213,6 +213,26 @@ class RouterProcessor: AbstractProcessor() {
             }
         }
 
+        val routerActionElements = roundEnv.getElementsAnnotatedWith(RouterAction::class.java)
+
+        if (routerActionElements.isNotEmpty()) {
+
+            routerActionElements
+                    .forEach {
+                        val routerAction = it.getAnnotation(RouterAction::class.java)
+                        val action = routerAction.value
+                        val className = ClassName.get(it.enclosingElement as TypeElement);
+                        val methodName = it.simpleName
+
+                        routerInitBuilder.addStatement("\$T.getInstance().map(\$S, " +
+                                "new MethodInvoker() {\n" +
+                                "   public void invoke(android.content.Context context, android.os.Bundle bundle) {\n" +
+                                "       \$T.\$N(context, bundle);\n" +
+                                "   }\n" +
+                                "})", TypeUtils.ROUTER, action, className ,methodName)
+                    }
+        }
+
         val routerInitMethod = routerInitBuilder.build()
 
         val type =  TypeSpec.classBuilder("RouterManager")

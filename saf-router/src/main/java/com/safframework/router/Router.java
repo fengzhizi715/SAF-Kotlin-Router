@@ -230,6 +230,7 @@ public class Router {
 			return;
 		}
 
+		// 判断是否包含scheme
 		try {
             if (url.contains("://")) {
 
@@ -248,10 +249,16 @@ public class Router {
             }
         }
 
-
 		RouterParameter param = parseUrl(url);
 		RouterParameter.RouterOptions options = param.routerOptions;
-		
+		MatchType matchType = param.matchType;
+
+		if (matchType == MatchType.PATH_ACTION) {
+
+			param.method.invoke(context, extras);
+			return;
+		}
+
 		Intent intent = this.parseRouterParameter(param);
 		if (intent == null) {
 			return;
@@ -411,28 +418,45 @@ public class Router {
 
 		RouterParameter.RouterOptions openOptions = null;
 		RouterParameter openParams = null;
-		for (Entry<String, Mapping> entry : this.routes.entrySet()) {
-			String routerUrl = entry.getKey();
-			Mapping mapping = entry.getValue();
-			RouterParameter.RouterOptions routerOptions = mapping.getOptions();
-			String[] routerParts = routerUrl.split("/");
 
-			if (routerParts.length != givenParts.length) {
-				continue;
-			}
+		if (routes.get(url)!=null) {
 
-			Map<String, String> givenParams = urlToParamsMap(givenParts, routerParts);
-			if (givenParams == null) {
-				continue;
-			}
+			Mapping mapping = routes.get(url);
 
-			openOptions = routerOptions;
+			openOptions = mapping.getOptions();
 			openParams = new RouterParameter();
-			openParams.openParams = givenParams;
-			openParams.routerOptions = routerOptions;
+			openParams.routerOptions = openOptions;
 			openParams.matchType = mapping.getMatchType();
-			break;
+			openParams.method = mapping.getMethod();
+
+			return openParams;
+		} else {
+
+			for (Entry<String, Mapping> entry : this.routes.entrySet()) {
+				String routerUrl = entry.getKey();
+				Mapping mapping = entry.getValue();
+				RouterParameter.RouterOptions routerOptions = mapping.getOptions();
+				String[] routerParts = routerUrl.split("/");
+
+				if (routerParts.length != givenParts.length) {
+					continue;
+				}
+
+				Map<String, String> givenParams = urlToParamsMap(givenParts, routerParts);
+				if (givenParams == null) {
+					continue;
+				}
+
+				openOptions = routerOptions;
+				openParams = new RouterParameter();
+				openParams.openParams = givenParams;
+				openParams.routerOptions = routerOptions;
+				openParams.matchType = mapping.getMatchType();
+				openParams.method = mapping.getMethod();
+				break;
+			}
 		}
+
 
 		if (openOptions == null || openParams == null) {
 

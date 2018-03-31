@@ -35,6 +35,8 @@ public class Mapping {
             matchType = MatchType.BROWSER;
         } else if (format.contains("://")) {
             matchType = MatchType.SCHEME;
+        } else if (activity == null){
+            matchType = MatchType.PATH_ACTION;
         } else {
             matchType = MatchType.PATH_ACTITY;
         }

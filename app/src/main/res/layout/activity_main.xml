@@ -45,4 +45,10 @@
         android:layout_width="200dp"
         android:layout_height="60dp"
         android:text="跳转到百度" />
+
+    <Button
+        android:id="@+id/button8"
+        android:layout_width="200dp"
+        android:layout_height="60dp"
+        android:text="测试Action" />
 </LinearLayout>

@@ -209,7 +209,6 @@ setErrorActivity|设置自定义的全局的Error Activity，如果路由服务�
 TODO:
 ===
 1. 更优雅的API
-2. 使用http/https地址时,可以直接跳转至使用浏览器
 
 License
 -------

@@ -38,6 +38,7 @@ class RouterProcessor: AbstractProcessor() {
      */
     override fun getSupportedAnnotationTypes(): Set<String> {
         val types = LinkedHashSet<String>()
+        types.add(RouterAction::class.java.canonicalName)
         types.add(RouterRule::class.java.canonicalName)
         types.add(Module::class.java.canonicalName)
         types.add(Modules::class.java.canonicalName)
@@ -111,34 +112,56 @@ class RouterProcessor: AbstractProcessor() {
 
         val routerRuleElements = roundEnv.getElementsAnnotatedWith(RouterRule::class.java)
 
-        if (routerRuleElements.isEmpty()) return
-
         val routerMapBuilder = MethodSpec.methodBuilder("map")
                 .addModifiers(Modifier.PUBLIC, Modifier.STATIC)
 
-        routerMapBuilder.addStatement("\$T options = null", TypeUtils.ROUTER_OPTIONS)
+        if (routerRuleElements.isNotEmpty()) {
 
-        routerRuleElements.map {
-            it as TypeElement
-        }.filter(fun(it: TypeElement): Boolean {
-            return isValidClass(mMessager, it, "@RouterRule")
-        }).forEach {
-            val routerRule = it.getAnnotation(RouterRule::class.java)
-            val routerUrls = routerRule.url
-            val enterAnim = routerRule.enterAnim
-            val exitAnim = routerRule.exitAnim
-            if (routerUrls != null) {
-                for (routerUrl in routerUrls) {
-                    if (enterAnim > 0 && exitAnim > 0) {
-                        routerMapBuilder.addStatement("options = new \$T()", TypeUtils.ROUTER_OPTIONS)
-                        routerMapBuilder.addStatement("options.enterAnim = " + enterAnim)
-                        routerMapBuilder.addStatement("options.exitAnim = " + exitAnim)
-                        routerMapBuilder.addStatement("\$T.getInstance().map(\$S, \$T.class,options)", TypeUtils.ROUTER, routerUrl, ClassName.get(it))
-                    } else {
-                        routerMapBuilder.addStatement("\$T.getInstance().map(\$S, \$T.class)", TypeUtils.ROUTER, routerUrl, ClassName.get(it))
+            routerMapBuilder.addStatement("\$T options = null", TypeUtils.ROUTER_OPTIONS)
+
+            routerRuleElements.map {
+                it as TypeElement
+            }.filter(fun(it: TypeElement): Boolean {
+                return isValidClass(mMessager, it, "@RouterRule")
+            }).forEach {
+                val routerRule = it.getAnnotation(RouterRule::class.java)
+                val routerUrls = routerRule.url
+                val enterAnim = routerRule.enterAnim
+                val exitAnim = routerRule.exitAnim
+                if (routerUrls != null) {
+                    for (routerUrl in routerUrls) {
+
+                        if (enterAnim > 0 && exitAnim > 0) {
+                            routerMapBuilder.addStatement("options = new \$T()", TypeUtils.ROUTER_OPTIONS)
+                            routerMapBuilder.addStatement("options.enterAnim = " + enterAnim)
+                            routerMapBuilder.addStatement("options.exitAnim = " + exitAnim)
+                            routerMapBuilder.addStatement("\$T.getInstance().map(\$S, \$T.class,options)", TypeUtils.ROUTER, routerUrl, ClassName.get(it))
+                        } else {
+                            routerMapBuilder.addStatement("\$T.getInstance().map(\$S, \$T.class)", TypeUtils.ROUTER, routerUrl, ClassName.get(it))
+                        }
                     }
                 }
             }
+        }
+
+        val routerActionElements = roundEnv.getElementsAnnotatedWith(RouterAction::class.java)
+
+        if (routerActionElements.isNotEmpty()) {
+
+            routerActionElements
+                    .forEach {
+                        val routerAction = it.getAnnotation(RouterAction::class.java)
+                        val action = routerAction.value
+                        val className = ClassName.get(it.enclosingElement as TypeElement);
+                        val methodName = it.simpleName
+
+                        routerMapBuilder.addStatement("\$T.getInstance().map(\$S, " +
+                                "new MethodInvoker() {\n" +
+                                "   public void invoke(android.content.Context context, android.os.Bundle bundle) {\n" +
+                                "       \$T.\$N(context, bundle);\n" +
+                                "   }\n" +
+                                "})", TypeUtils.ROUTER, action, className ,methodName)
+                    }
         }
 
         val routerMapMethod = routerMapBuilder.build()

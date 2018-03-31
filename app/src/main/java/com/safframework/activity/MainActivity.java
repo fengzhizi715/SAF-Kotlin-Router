@@ -83,6 +83,15 @@ public class MainActivity extends AppCompatActivity {
                 Router.getInstance().open("https://www.baidu.com/");
             }
         });
+
+        Button button8 = (Button) findViewById(R.id.button8);
+        button8.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Router.getInstance().open("logout");
+            }
+        });
     }
 
     @Override

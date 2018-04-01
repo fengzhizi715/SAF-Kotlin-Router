@@ -23,6 +23,11 @@ public class Mapping {
 
     public Mapping(String format,Class<? extends Activity> activity,RouterParameter.RouterOptions options,MethodInvoker method) {
 
+        this(format,activity,options,method,null);
+    }
+
+    public Mapping(String format,Class<? extends Activity> activity,RouterParameter.RouterOptions options,MethodInvoker method,MatchType matchType) {
+
         if (format == null) {
             throw new RouterException("format can not be null");
         }
@@ -30,15 +35,22 @@ public class Mapping {
         this.activity = activity;
         this.options = options;
         this.method = method;
+        this.matchType = matchType;
 
-        if (format.toLowerCase().startsWith("http://") || format.toLowerCase().startsWith("https://")) {
-            matchType = MatchType.BROWSER;
-        } else if (format.contains("://")) {
-            matchType = MatchType.SCHEME;
-        } else if (activity == null){
-            matchType = MatchType.PATH_ACTION;
+        if (matchType!=null) {
+
+            this.matchType = matchType;
         } else {
-            matchType = MatchType.PATH_ACTITY;
+
+            if (format.toLowerCase().startsWith("http://") || format.toLowerCase().startsWith("https://")) {
+                matchType = MatchType.BROWSER;
+            } else if (format.contains("://")) {
+                matchType = MatchType.SCHEME;
+            } else if (activity == null){
+                matchType = MatchType.PATH_ACTION;
+            } else {
+                matchType = MatchType.PATH_ACTITY;
+            }
         }
     }
 

@@ -43,13 +43,13 @@ public class Mapping {
         } else {
 
             if (format.toLowerCase().startsWith("http://") || format.toLowerCase().startsWith("https://")) {
-                matchType = MatchType.BROWSER;
+                this.matchType = MatchType.BROWSER;
             } else if (format.contains("://")) {
-                matchType = MatchType.SCHEME;
+                this.matchType = MatchType.SCHEME;
             } else if (activity == null){
-                matchType = MatchType.PATH_ACTION;
+                this.matchType = MatchType.PATH_ACTION;
             } else {
-                matchType = MatchType.PATH_ACTITY;
+                this.matchType = MatchType.PATH_ACTITY;
             }
         }
     }

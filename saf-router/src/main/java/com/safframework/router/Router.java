@@ -45,7 +45,7 @@ public class Router {
 	
 	private Context context;
 	private LruCache<String, RouterParameter> cachedRoutes = new LruCache<String, RouterParameter>(DEFAULT_CACHE_SIZE); // 缓存跳转的参数
-	private final Map<String, Mapping> routes = new HashMap<String, Mapping>();
+	private final Map<String, Mapping> routes = new HashMap<>();
 	private Class errorActivityClass;
 	
 	private static final Router router = new Router();
@@ -356,7 +356,7 @@ public class Router {
 		fragmentOptions.fragmentManager.beginTransaction().replace(containerViewId , fragment).addToBackStack(null).commit();
 	}
 
-    /******************************** openFragment 相关操作 end ********************************／
+	/******************************** openFragment 相关操作 end ********************************／
 
 	 /**
 	 *

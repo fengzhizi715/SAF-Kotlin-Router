@@ -11,9 +11,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.util.LruCache;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -77,17 +75,6 @@ public class Router {
 
 	/******************************** map 相关操作 start ********************************／
 
-    /**
-     *
-     * @param format
-     * @param fragmentClazz
-     * @param matchType
-     */
-	public void map(String format,String fragmentClazz,MatchType matchType) {
-
-		routes.put(format,new Mapping(format, null,null, null ,matchType));
-	}
-
 	/**
 	 *
 	 * @param format
@@ -112,6 +99,18 @@ public class Router {
 		}
 		options.clazz = clazz;
 		routes.put(format,new Mapping(format,clazz,options));
+	}
+
+	/**
+	 *
+	 * @param format
+	 * @param activity
+	 * @param fragmentClazz
+	 * @param matchType
+	 */
+	public void map(String format,Class<? extends Activity> activity, Class<? extends Fragment> fragmentClazz,MatchType matchType) {
+
+		routes.put(format,new Mapping(format, activity,fragmentClazz,null, null ,matchType));
 	}
 
 	/******************************** map 相关操作 end ********************************／

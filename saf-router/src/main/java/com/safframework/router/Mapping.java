@@ -13,7 +13,7 @@ public class Mapping {
 
     private String format;
     private Class<? extends Activity> activity;
-    private Fragment fragment;
+    private Class<? extends Fragment> fragment;
     private RouterParameter.RouterOptions options;
     private MethodInvoker method;
     private MatchType matchType;
@@ -33,7 +33,7 @@ public class Mapping {
         this(format, activity, null, options, method, null);
     }
 
-    public Mapping(String format, Class<? extends Activity> activity, Fragment fragment, RouterParameter.RouterOptions options, MethodInvoker method, MatchType matchType) {
+    public Mapping(String format, Class<? extends Activity> activity, Class<? extends Fragment> fragment, RouterParameter.RouterOptions options, MethodInvoker method, MatchType matchType) {
 
         if (format == null) {
             throw new RouterException("format can not be null");
@@ -72,7 +72,7 @@ public class Mapping {
         return activity;
     }
 
-    public Fragment getFragment() {
+    public Class<? extends Fragment> getFragment() {
         return fragment;
     }
 

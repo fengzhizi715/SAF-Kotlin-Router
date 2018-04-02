@@ -35,7 +35,8 @@ import java.util.Map.Entry;
  * Router.getInstance().map("user/:user/password/:password", SecondActivity.class, options);
  * </code>
  * </pre>
- * Intent Router可以完成各个Intent之间的跳转，类似rails的router功能
+ *
+ * Router可以完成各个Intent之间的跳转，类似rails的router功能
  * @author Tony Shen
  *
  */
@@ -75,6 +76,17 @@ public class Router {
 	}
 
 	/******************************** map 相关操作 start ********************************／
+
+    /**
+     *
+     * @param format
+     * @param fragmentClazz
+     * @param matchType
+     */
+	public void map(String format,String fragmentClazz,MatchType matchType) {
+
+		routes.put(format,new Mapping(format, null,null, null ,matchType));
+	}
 
 	/**
 	 *
@@ -358,7 +370,17 @@ public class Router {
 
 	/******************************** openFragment 相关操作 end ********************************／
 
-	 /**
+	/**
+	 *
+	 * @return
+	 */
+	public Fragment getFragment(String url) {
+
+
+		return null;
+	}
+
+	/**
 	 *
 	 * @param url
 	 * @param fragmentOptions

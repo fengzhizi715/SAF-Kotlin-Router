@@ -11,5 +11,6 @@ class TypeUtils {
         val CONTEXT = ClassName.get("android.content", "Context");
         val ROUTER = ClassName.get("com.safframework.router", "Router")
         val ROUTER_OPTIONS = ClassName.get("com.safframework.router.RouterParameter", "RouterOptions")
+        val MATCH_TYPE = ClassName.get("com.safframework.router", "MatchType")
     }
 }

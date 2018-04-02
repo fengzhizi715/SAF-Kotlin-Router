@@ -20,6 +20,10 @@ class RouterProcessor: AbstractProcessor() {
     var mElementUtils: Elements?=null //元素相关的辅助类
     var mMessager: Messager?=null     //日志相关的辅助类
 
+    val ACTIVITY_FULL_NAME = "android.app.Activity"
+    val FRAGMENT_FULL_NAME = "android.app.Fragment"
+    val FRAGMENT_V4_FULL_NAME = "android.support.v4.app.Fragment"
+
     @Synchronized
     override fun init(processingEnv: ProcessingEnvironment) {
         super.init(processingEnv)
@@ -125,23 +129,37 @@ class RouterProcessor: AbstractProcessor() {
                     }.filter(fun(it: TypeElement): Boolean {
                         return isValidClass(mMessager, it, "@RouterRule")
                     }).forEach {
-                        val routerRule = it.getAnnotation(RouterRule::class.java)
-                        val routerUrls = routerRule.url
-                        val enterAnim = routerRule.enterAnim
-                        val exitAnim = routerRule.exitAnim
-                        if (routerUrls != null) {
-                            for (routerUrl in routerUrls) {
 
-                                if (enterAnim > 0 && exitAnim > 0) {
-                                    routerMapBuilder.addStatement("options = new \$T()", TypeUtils.ROUTER_OPTIONS)
-                                    routerMapBuilder.addStatement("options.enterAnim = " + enterAnim)
-                                    routerMapBuilder.addStatement("options.exitAnim = " + exitAnim)
-                                    routerMapBuilder.addStatement("\$T.getInstance().map(\$S, \$T.class,options)", TypeUtils.ROUTER, routerUrl, ClassName.get(it))
-                                } else {
-                                    routerMapBuilder.addStatement("\$T.getInstance().map(\$S, \$T.class)", TypeUtils.ROUTER, routerUrl, ClassName.get(it))
+                        if (isSubtype(processingEnv, it, ACTIVITY_FULL_NAME)) {
+                            val routerRule = it.getAnnotation(RouterRule::class.java)
+                            val routerUrls = routerRule.url
+                            val enterAnim = routerRule.enterAnim
+                            val exitAnim = routerRule.exitAnim
+                            if (routerUrls != null) {
+                                for (routerUrl in routerUrls) {
+
+                                    if (enterAnim > 0 && exitAnim > 0) {
+                                        routerMapBuilder.addStatement("options = new \$T()", TypeUtils.ROUTER_OPTIONS)
+                                        routerMapBuilder.addStatement("options.enterAnim = " + enterAnim)
+                                        routerMapBuilder.addStatement("options.exitAnim = " + exitAnim)
+                                        routerMapBuilder.addStatement("\$T.getInstance().map(\$S, \$T.class,options)", TypeUtils.ROUTER, routerUrl, ClassName.get(it))
+                                    } else {
+                                        routerMapBuilder.addStatement("\$T.getInstance().map(\$S, \$T.class)", TypeUtils.ROUTER, routerUrl, ClassName.get(it))
+                                    }
+                                }
+                            }
+                        } else if (isSubtype(processingEnv, it, FRAGMENT_V4_FULL_NAME)) {
+
+                            val routerRule = it.getAnnotation(RouterRule::class.java)
+                            val routerUrls = routerRule.url
+                            if (routerUrls != null) {
+                                for (routerUrl in routerUrls) {
+
+                                    routerMapBuilder.addStatement("\$T.getInstance().map(\$S, \$T.PATH_FRAGMNET)", TypeUtils.ROUTER, routerUrl, TypeUtils.MATCH_TYPE)
                                 }
                             }
                         }
+
                     }
         }
 

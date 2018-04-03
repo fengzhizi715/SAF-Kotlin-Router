@@ -25,11 +25,11 @@ dependencies {
 ```
 
 # 特性
-* 早期它参考了rails框架的router功能，能够非常简单地实现app的应用内跳转,包括Activity之间、Fragment之间实现相互跳转，并传递参数。
+* 早期参考了rails框架的router功能，它能够非常简单地实现app的应用内跳转,包括Activity之间、Fragment之间实现相互跳转，并传递参数。
 
 * 本框架的saf-router-compiler、saf-router-annotation模块是使用`kotlin`编写的。
 
-* 支持模块化的架构。
+* 从1.1版本开始支持模块化的架构。
 
 * 从1.2版本开始，支持对某个类中的某个方法使用路由跳转。
 

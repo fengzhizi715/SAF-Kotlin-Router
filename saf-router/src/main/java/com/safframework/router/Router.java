@@ -375,7 +375,7 @@ public class Router {
 	 */
 	public Fragment getFragment(String url) {
 
-
+		RouterParameter param = parseUrl(url);
 		return null;
 	}
 

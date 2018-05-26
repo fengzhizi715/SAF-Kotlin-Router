@@ -17,7 +17,7 @@
 
 ```groovy
 dependencies {
-    implementation 'com.safframework.router:saf-router:1.2.0'
+    implementation 'com.safframework.router:saf-router:1.2.1'
     implementation 'com.safframework.router:saf-router-annotation:1.2.0'
     annotationProcessor 'com.safframework.router:saf-router-compiler:1.2.0'
     ...
